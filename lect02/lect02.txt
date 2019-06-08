@@ -71,3 +71,12 @@ C = consitency (transform db from one valid state to another valid state)
 I = isolation (each transactions should be independent of each other)
 D = durability (completed transactions should remain permanant)
 
+enter the login page:
+	sqlplus
+
+credentials:
+	username: sys as sysdba
+	else    : orcl
+
+Avoid many-many in production dbs
+In Data Warewhouse it is fine
