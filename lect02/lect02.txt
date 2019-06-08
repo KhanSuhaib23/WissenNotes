@@ -1,0 +1,73 @@
+What is DBMS
+	-> very large, integrated collection of data
+	-> models real-world enterpirse (structure/process)
+	-> entities
+ 		-> physical
+ 		-> logical
+ 	-> relationship
+
+
+Why use?
+	-> data independence and efficient access
+	-> reduced appn dev time
+	-> data integrity and security
+	-> uniform data administration
+	-> concurrent access
+	-> recovery from crashes
+
+In Oracle instance is a collection of memory components and multiple background components and each background process are independently working.
+
+Background Processes
+	-> Database Writer (dbwr)
+	-> Log Writer (lgwr)
+	-> Checkpoint Process (chkp)
+	-> System Monitor (smon)
+	-> Process Monitor (pmon)
+	-> Recoverer (reco)
+	-> Archive Process (arc)
+
+	-> Server Process (sp) [universal, does multiple jobs]
+
+////////////////////////////
+//  Find type of memory?  //
+////////////////////////////
+
+Database is always associated with a single instance.
+
+That single instance maybe distrbuted/duplicated across various nodes. (used for providing high availability).
+This is called as Real Application Cluster (RAC).
+
+Data Dictionary = Catalog = Metadata = System Tables
+
+Our Data = User Tables
+
+Relation = table
+Tuple = row
+Attrbute = column
+Degree = num attribs
+Cardinality = num tuples
+Primary Key = identifier
+Domain = pool of values 
+
+Components of SQL 
+	-> DDL (Data Definition Language)
+	-> DML (Data Manipulation Language)
+	-> TCL (Transacation Control Language)
+	-> DCL (Data Control Language)
+
+
+Behind the Scene of DMBS
+
+	-> Query Engine (parses the query, done inside the DB instance)
+	-> Query Optimizer (generating execution plans)
+	-> Storage Management (organization of data in the drives)
+	-> Transaction Management (concurrency, recovery)
+
+Transactions: it is a sequence of statement that should either succeed completely or fail entirely (no partial success or partial failure)
+
+Properties:
+A = atomicity (full succeed or fail)
+C = consitency (transform db from one valid state to another valid state)
+I = isolation (each transactions should be independent of each other)
+D = durability (completed transactions should remain permanant)
+
