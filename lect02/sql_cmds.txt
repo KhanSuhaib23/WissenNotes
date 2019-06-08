@@ -1,0 +1,54 @@
+show user; // show user
+conn sys as sysdba; // connect as a sys user
+conn <user-name>; // connect as a user
+desc <table name>; // strcutre of the table
+
+sys tables
+	-> dba_users // meta data to stores info of all the users of the db
+
+	-> tab // stores all the tables
+
+user_xyz works for all schemas
+all_xyx
+
+dba_xyz works only for sysdba 
+v$xyz
+
+After getting the structure we can simple select from it to get info
+
+we will first do
+
+	select username, create, account_status from dba_users
+
+Now we can see SCOTT and HR which we will be using
+
+schema name (logical name) and user name (physical name) will always be the same
+
+alter user <user-name> identified by <new-password> account [lock|unlock]
+
+We try to log into hr
+
+alter user hr identified by pass account unlock
+
+To connect directly to a remote database
+
+	sqlplus <user-name>/<password>@<database-name>
+
+To no enter password seperately
+
+	> sqlplus 
+	> <user-name>/<password>
+
+
+
+orcl is the database.
+there could be multiple databases.
+each database has several schemas/users 
+schemas are basically work areas inside a database
+
+schemas are concept specific to oracle.
+
+Inside schemas we have tables.
+
+Each user (that is same as schema) can access other database under its credential if it has access. [remote database]
+
