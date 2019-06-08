@@ -1,0 +1,8 @@
+package com.wissen.dept;
+
+public class Department {
+	
+	public String name;
+	public int totalSalary;
+
+}

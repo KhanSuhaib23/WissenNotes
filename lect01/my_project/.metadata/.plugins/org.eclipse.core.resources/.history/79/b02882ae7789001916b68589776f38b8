@@ -1,0 +1,5 @@
+package com.wissen.font;
+
+public class ArialFont implements Font {
+	
+}

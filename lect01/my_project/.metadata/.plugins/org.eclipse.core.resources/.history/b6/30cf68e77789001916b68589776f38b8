@@ -1,0 +1,9 @@
+package com.wissen.ui;
+
+import com.wissen.font.Font;
+
+public class UI {
+	
+	private Font font;
+
+}

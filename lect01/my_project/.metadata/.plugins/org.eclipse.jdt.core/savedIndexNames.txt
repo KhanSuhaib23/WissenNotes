@@ -1,0 +1,4 @@
+INDEX VERSION 1.131+C:\Users\nexwave\Desktop\SuhaibKhan\lect01\my_project\.metadata\.plugins\org.eclipse.jdt.core
+3340298911.index
+3118935617.index
+3662285711.index

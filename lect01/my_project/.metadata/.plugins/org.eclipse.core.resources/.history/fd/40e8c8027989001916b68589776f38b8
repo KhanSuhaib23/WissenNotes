@@ -1,0 +1,21 @@
+package com.wissen.app;
+
+import com.wissen.font.ArialFont;
+import com.wissen.font.Font;
+import com.wissen.ui.UI;
+
+public class App {
+	
+	public static void main(String[] args)
+	{
+		Font arialFont = new ArialFont(12, false);
+		UI ui = new UI(arialFont);
+		ui.display("First Line of text");
+		
+		Font arialFontBold = new ArialFont(12, true);
+		
+		ui.setFont(arialFontBold);
+		ui.display("Second Line of text");
+	}
+
+}

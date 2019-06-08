@@ -1,0 +1,8 @@
+package com.wissen.player;
+
+public class Player {
+	
+	public String name;
+	public int health;
+	
+}

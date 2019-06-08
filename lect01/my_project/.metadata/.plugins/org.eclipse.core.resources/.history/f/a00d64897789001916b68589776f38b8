@@ -1,0 +1,9 @@
+package com.wissen.font;
+
+public interface Font {
+	
+	private int size;
+	
+	public abstract void render(String text);
+
+}

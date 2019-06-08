@@ -1,0 +1,54 @@
+package com.wissen.app;
+
+import java.util.ArrayList;
+import java.util.List;
+
+class Department
+{
+	public String name;
+	public double total;
+	
+	public boolean equals(Department dept)
+	{
+		return dept.name.equals(name);
+	}
+}
+
+public class App {
+	
+	public static void main(String[] args)
+	{
+		String[] records = {
+				"E1,IT,1000",
+				"E2,HR,1000",
+				"E3,IT,2000",
+				"E4,SALES,4000"
+		};
+	
+		List<Department> depts = new ArrayList<Department>();
+		
+		for (String record : records)
+		{
+			String[] cols = record.split(",");
+			
+			int index = depts.indexOf(cols[1]);
+			double value = Double.parseDouble(cols[2]);
+			
+			if (index == -1)
+			{
+				name.add(cols[1]);
+				total.add(value);
+			}
+			else
+			{
+				total.set(index, total.get(index) + value);
+			}
+		}
+		
+		for (int i = 0; i < name.size(); i++)
+		{
+			System.out.println(name.get(i) + " : " + total.get(i));
+		}
+	}
+
+}

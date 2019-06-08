@@ -1,0 +1,14 @@
+package com.wissen.hr;
+
+import com.wissen.emp.Employee;
+
+public class HR {
+
+	public static void manage()
+	{
+		Employee e1 = new Employee();
+		
+		
+	}
+	
+}

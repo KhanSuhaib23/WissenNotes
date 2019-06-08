@@ -1,0 +1,16 @@
+package com.wissen.emp;
+
+public class Employee {
+		
+	public final static String COMPANY = "WISSEN";
+	public static String trainerName;
+	
+	public int id;
+	public String name;
+	
+	public void printInfo()
+	{
+		System.out.printf("\nEmployee with id %d and name %s of company %s is being trained by %s\n", id, name, COMPANY, trainerName);
+	}
+	
+}

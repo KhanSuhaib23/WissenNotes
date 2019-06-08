@@ -1,0 +1,14 @@
+package com.wissen.app;
+
+import com.wissen.font.ArialFont;
+import com.wissen.font.Font;
+
+public class App {
+	
+	public static void main(String[] args)
+	{
+		Font arialFont = new ArialFont(12, false);
+		UI ui = new UI(arialFont);
+	}
+
+}

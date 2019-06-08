@@ -1,0 +1,8 @@
+package com.wissen.emp;
+
+public class Employee {
+		
+	public final static String companyName = "WISSEN";
+	public static String trainerName;
+	
+}

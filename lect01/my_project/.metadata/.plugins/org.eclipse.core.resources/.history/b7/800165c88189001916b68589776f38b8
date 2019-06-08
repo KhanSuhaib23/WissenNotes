@@ -1,0 +1,7 @@
+package com.wissen.rec;
+
+public interface Parser {
+	
+	public void parse(String[] recs);
+
+}

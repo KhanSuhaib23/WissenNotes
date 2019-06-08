@@ -1,0 +1,11 @@
+package com.wissen.rec;
+
+public class CSVParser implements Parser {
+
+	@Override
+	public void parse() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

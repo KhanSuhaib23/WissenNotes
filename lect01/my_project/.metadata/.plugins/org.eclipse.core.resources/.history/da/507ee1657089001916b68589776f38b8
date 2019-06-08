@@ -1,0 +1,10 @@
+package com.wissen.entity;
+
+public class Enemy {
+	
+	public String name;
+	public int health;
+	
+	
+
+}

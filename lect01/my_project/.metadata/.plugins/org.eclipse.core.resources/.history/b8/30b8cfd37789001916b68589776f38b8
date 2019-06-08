@@ -1,0 +1,7 @@
+package com.wissen.ui;
+
+public class UI {
+	
+	Font font;
+
+}
