@@ -1,3 +1,24 @@
-Lecture 3 - Java
+Lecture 3 - Java (10/06/2019)
+
+Recommended Java Heirarchy Structure
 
 
+top-level (API)               : interfaces / No Implementation
+middle-level (Common Methods) : abstract classes / Partial Implementation of the common methods
+bottom-level (Logic)          : normal classes / Rest of the implementations 
+
+
+1 interface can extends multiple interfaces
+1 class can implements multiple interfaces
+1 class can however extends only 1 class
+
+abstract classes don't need to implement all methods of inerface it implements
+
+
+For protected to be accessible then it either has to be in the same package or be child object.
+Either one of these or both
+
+Override
+
+Exact same parameters and return type
+Same or increased access specifier (public > protected > default > private)
