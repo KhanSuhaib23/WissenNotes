@@ -49,3 +49,19 @@ throwables
 		runtime exceptions
 	error 
 
+--------------------- Generics -------------------------
+
+
+-------------------------------------------------------
+
+1. Classes inside functions
+2. Anonymous classes 
+3. Try to implement the iterator with local function classes
+
+To make sommething allowed to be iterated by foreach loop
+
+Eg. 
+
+for (String str : strs) {}
+
+then it should implement iterable interface 
