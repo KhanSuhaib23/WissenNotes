@@ -73,7 +73,7 @@ class LinkedList<T> implements Iterable<T> {
 
 	public void add(int index, T data) {
 		if (index > length)
-			throw new ArrayIndexOutOfBoundsException(
+			throw new ListIndexOutOfBoundsException(
 					"Trying to add to index [" + index + "] on list of length [" + length + "]");
 
 		Element lle = new Element();
@@ -104,7 +104,7 @@ class LinkedList<T> implements Iterable<T> {
 
 	public void set(int index, T data) {
 		if (index >= length)
-			throw new ArrayIndexOutOfBoundsException(
+			throw new ListIndexOutOfBoundsException(
 					"Trying to set index [" + index + "] on list of length [" + length + "]");
 
 		Element curr = start;
@@ -118,7 +118,7 @@ class LinkedList<T> implements Iterable<T> {
 
 	public T get(int index) {
 		if (index >= length)
-			throw new ArrayIndexOutOfBoundsException(
+			throw new ListIndexOutOfBoundsException(
 					"Trying to get index [" + index + "] on list of length [" + length + "]");
 
 		Element curr = start;
@@ -132,7 +132,7 @@ class LinkedList<T> implements Iterable<T> {
 
 	public T remove(int index) {
 		if (index >= length)
-			throw new ArrayIndexOutOfBoundsException(
+			throw new ListIndexOutOfBoundsException(
 					"Trying to remove index [" + index + "] on list of length [" + length + "]");
 
 		Element prev = null;
@@ -240,6 +240,14 @@ class LinkedList<T> implements Iterable<T> {
 		temp += "]";
 
 		return temp;
+	}
+}
+
+class ListIndexOutOfBoundsException extends RuntimeException
+{
+
+	public ListIndexOutOfBoundsException(String msg) {
+		super(msg);
 	}
 }
 
