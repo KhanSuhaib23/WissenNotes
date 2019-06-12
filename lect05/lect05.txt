@@ -1,0 +1,172 @@
+sqlplus is a tool to connect to a server/database
+
+when we first login it first connects to the metadata table checks credentials and then connect to the specified schema.
+
+listener.ora is a file that always resides on the server and listens to all the requests also does all the authentication
+
+tnsnames.ora file is on the client side it will has the details to connect the the server (IP address, machine address, etc)
+
+
+The file are at
+
+C:\app\Nexwave\ (the user it was installed for)
+
+|---> product\11.2.0\dbhome_1\: stores all the binary for the software to work
+|		|---> NETWORK\ADMIN: has the tnsnames.ora
+|
+|---> 
+
+
+To get specific paths then we use manual method in which a script is created to create the db
+
+Default oracle port is 1521
+
+SERVER: could be either DEDICATED (default) or SHARED
+
+
+8i  -> i = internet
+9i  -> i = intelligent
+10g -> g = grid
+11g -> g = grid
+12c -> c = cloud
+
+	|
+	|----> cdb: container database
+	|
+	|----> pdb: pluggable database
+
+select = selection (row) + projection (column)
+
+for select on multiple table use join
+
+
+Clauses
+	|
+	|----> SELECT: gives the columns/alias/expressions
+	|
+	|----> FROM  : gives the table name
+
+
+-> SQL statements are not case sensitive
+-> can be one or more lines
+-> clauses are usually placed on seperate line
+
+-> -- for comments
+
+Expressions
+
+	'+' : adds lhs and rhs.
+	    : lhs, rhs could be columns or literals but have to be numerical
+
+	'-' : 'same'
+	
+	'*' : 'same'
+	
+	'/' : 'same'
+
+Precendence:
+	* / [>] + -
+	Same priority then left to right
+	Can be changed using ()
+
+NULL values are values that are unavailable, unassigned, unknown or inapplicable.
+
+NULL is not 0 or blank space
+
+value of NULL is NULL
+
+an arithmetic expression containing NULL always evaluates to NULL
+
+column aliasing 
+
+	select last_name as lname, first_name as "First Name", commission comn from .....;
+
+	"string" string is case sensitive
+	as is not necessaery
+	AS is a clause
+
+Concatenate
+
+concatenate the results in the columns
+
+a || b || c ... 
+
+a, b, c ... : could be column (any type) or literals
+
+			: numerical literals are as in 2000
+
+			: string literals are 'string'
+
+
+Alternate Quote Operation (from 10g)
+
+in string literal problem comes when we use ' in the string
+
+to use Quote Operator
+
+q'[<string>]'
+q'{<string>}'
+q'(<string>)'
+
+any of the above is fine
+
+<string> can have special characters like '
+
+Distinct
+
+	Clause to get distinct rows
+
+
+Where
+	select <>
+	from <>
+	[where <condition>] // optional
+
+strings: '<string>' case sensitive
+data   : 'DD-MON-YY' 
+
+comparsion conditions
+
+	=
+	>
+	>=
+	<
+	<=
+	<> // not equal
+	=! // not equal
+	BETWEEN ... AND ... // values are inclusive
+	LIKE // regex matching
+	IS NOT NULL // all the not nulls
+	IS NULL // all the nulls
+	IN ( , , , ) // true if matches any
+	NOT IN ( , , , ) // true if there were no matches, NULL values are not selected
+
+LIKE '<regex>'
+
+<regex>: % -> any number of wild card character (0 to inf)
+		 _ -> one wild card character
+
+		 wild card character matches with any character
+
+Comparision Connectors
+
+AND 
+OR 
+NOT
+
+
+connection: connecting from one machine to another through a network
+session   : the time from log in (start) to log out (end)
+
+If connection is lost session goes away
+
+Session can be started and end multiple time on the same ongoing connection
+
+Data will be in memory if is in MRU (most recently used)
+Data may or may not be in memory if is in LRU (least recently used)
+
+
+
+
+
+
