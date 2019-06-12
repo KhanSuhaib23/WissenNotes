@@ -165,8 +165,56 @@ Session can be started and end multiple time on the same ongoing connection
 Data will be in memory if is in MRU (most recently used)
 Data may or may not be in memory if is in LRU (least recently used)
 
+A temporary memory area is used for sorting
+
+ORDER BY 
+
+	sorts data
+	always the last clause in a statement
 
 
+/ enter 
+
+executes the previously executed function
+
+&variable name that is taken for every execution
+
+&&variable name that is taken only the first execution in a session // session level variable
+
+ed to start a editor with the previous query in the buffer that can be edited.
+
+it changed the query executed by /
+
+define to get all the session variables
 
 
+define <var-name> = <value> // to define variable // no prompt if already defined
+
+undefine <var-name> //   
+
+
+set verify [on|off]
+
+the display of old and new subtitution lines for substitution variables
+
+-> rownum is a pseudo column. It maintains increementing rownumber of each in the table
+
+can be used inside rownum
+
+
+eg
+
+select * 
+from employees
+where rownum <= 10
+
+Only works when we start from the begining
+
+select * 
+from employees
+where rownum = 10 // doesn't work
+
+select * 
+from employees
+where rownum = 1 // does work
 

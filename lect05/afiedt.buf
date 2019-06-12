@@ -1,0 +1,4 @@
+select rownum, employee_id
+from employees
+where rownum <= 12
+/
