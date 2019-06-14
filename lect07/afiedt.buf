@@ -1,0 +1,16 @@
+declare
+v_myage number := &age;
+begin
+if v_myage >= 21
+then 
+dbms_output.put_line('I am an adult');
+else
+if v_myage >= 13
+then
+dbms_output.put_line('I am a teenager');
+else
+dbms_output.put_line('I am a child');
+end if;
+end if;
+end;
+/

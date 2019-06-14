@@ -1,0 +1,42 @@
+Lecture 7 - DBMS (14-06-2019)
+
+PL-SQL
+
+	-> Procedural Language (PL) extension to SQL
+	-> subprogram = code = block
+	-> SQL first executes then the result goes to PL/SQL engine
+
+
+BEGIN to END executable area
+
+If we have a named block it is a PL/SQL object
+
+To actually allow to view output we have to do this every session
+
+set serveroutput on;
+
+Built in oracle package
+
+dbms_output.put_line(<string>)
+
+scope of varialbe is towwards the upward direction (program < session < instance )
+
+ie check program first if not declared then to session and so on ... not found then error
+
+bind variable declare
+
+	variable <name> <datatype>
+
+	to use in PL/SQL 
+
+	:[g|b]_<name>
+
+	to get all the bind variables
+
+	variable;
+
+	to print the variable
+
+	print <var-name>;
+
+	
