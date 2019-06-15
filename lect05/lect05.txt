@@ -123,7 +123,7 @@ Where
 	[where <condition>] // optional
 
 strings: '<string>' case sensitive
-data   : 'DD-MON-YY' 
+data   : 'DD-MON-RR' 
 
 comparsion conditions
 

@@ -1,0 +1,2 @@
+select last_name, salary, nvl2(commission_pct, salary * 12, salary * 1) from employees
+/

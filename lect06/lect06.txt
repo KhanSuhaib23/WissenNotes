@@ -1,0 +1,147 @@
+DBMS Lecture 6 13/06/2019 
+
+NOTE: dual is a dummy table that exists in all schema with just a single row and single column
+
+dbca (database configuration assistance) tools -> wizard to create database
+
+Functions
+
+	function is an object in db 
+	it always returns a single value
+	takes n number of arguments
+
+	types
+	|
+	|----> implicit: already available in the software
+	|
+	|----> explicit: created by the programmer
+
+
+	types
+	|
+	|----> single row functions
+	|
+	|----> multiple row functions
+
+
+
+case manipulation
+|
+|---> upper
+|
+|---> lower
+|
+|---> initcap
+
+operates row by row
+
+
+string manipulation 
+|
+|---> concat($1, $2)
+|
+|---> substr($1, start_index, length) // 1 - indexing // if length not specified till the end
+|
+|---> length($1) 
+|
+|---> instr($1, 'str') // index of the first occurence of str in $1, if not available returns 0
+|
+|---> lpad($1, num, 'str') // pad str to the left of $1 for length num. lpad(100, 6, '*') -> ******100
+|							// lpad(100, 6, '*#') -> *#*#*#100
+|
+|---> rpad($1, num, 'str') // same but pads to the right
+|
+|---> replace($1, 'str1', 'str2') // replace the occurence of str1 in $1 with str2
+|
+|---> trim ('char' from $1) // if char (single character) is present at the start or the end it removes them
+							// if multiple of that char is present at start or end all of them are removed
+							// cannot remove from the middle though
+							// eg. trim('a' from 'aaaabbaaqfaaa') -> 'bbaaqf'
+
+
+number function
+|
+|---> round(decimal, places) // rounds (closet decimal) the decimal value to the specified places, places could be -ve, if places not
+|							 // specified 0 is taken
+|							 // if -ve is specified then decimal is ignored and the number is rounded
+|
+|---> trunc(decimal, places) // truncates (gets rid of) the decimal value to the specified places
+|
+|---> mod(num, den) // remainder of num / den
+
+
+
+date format
+
+DD-MON-RR (different from DD-MON-YY) // internaqlly stored as binary
+
+
+Date Manipulation Functions
+|
+|---> months_between($date1, $date2)
+|
+|---> add_months($date_1, months)
+|
+|---> next_day($date, '<day name>') the first date after the $date that falls on <day name>
+|
+|---> round(date, 'unit')
+		|
+		|---> round(date, 'month') 1-15 = 1 15 - last = last
+		|
+		|---> round(date, 'year') JAN-JUNE = JAN ...
+
+
+Implicit Data Type Conversions
+
+
+Explict Data Type Conversions
+|
+|---> to_date() char -> date
+|
+|---> to_number() char -> number
+|
+|---> to_char() number/date -> char
+		|
+		|---> to_char(date, 'format') [if lower case the output if in strings will also be in lower case]
+		|						|
+		|						|--> YYYY: full year in number
+		|						|
+		|						|--> YEAR: year spelt out
+		|						|
+		|						|--> MM: two digit month
+		|						|
+		|						|--> MONTH: full name of month
+		|
+		|---> to_char(number, 'format')
+								|
+								|--> 9 : any number
+								|
+								|--> 0 : forces a 0
+								|
+								|--> ,/. 
+								|
+								|--> : if cannot be formatted like specified then ####### shows up
+
+RR format
+
+YY-> only focuses on years no focus on centuries
+
+RR -> focuses on centuries as well
+
+	if specifed YY is from 00 to 49 and current YY is from 00 to 49 then the century is the current century
+	if specifed YY is from 00 to 49 and current YY is from 50 to 99 then the century is the next century
+	if specifed YY is from 50 to 99 and current YY is from 00 to 49 then the century is the previous century
+	if specifed YY is from 50 to 99 and current YY is from 50 to 99 then the century is the current century
+
+Can use YY if only current century is operated on
+Else always use RR
+
+Nesting functions
+
+General Functions
+	|
+	|---> NVL (expr1, expr2) // converts null value to some value 
+	|
+	|---> NVL2 (expr1, expr2, expr3) // if expr1 is not null replace by expr2 if expr1 is null replace by expr3
+	|
+	|--->  

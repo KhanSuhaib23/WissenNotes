@@ -22,3 +22,4 @@ Override
 
 Exact same parameters and return type
 Same or increased access specifier (public > protected > default > private)
+

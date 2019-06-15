@@ -28,6 +28,8 @@ Background Processes
 
 	-> Server Process (sp) [universal, does multiple jobs]
 
+	-> User Process (up) [on the client side]
+
 ////////////////////////////
 //  Find type of memory?  //
 ////////////////////////////
