@@ -1,0 +1,165 @@
+Lecture 9 (17-06-2019) Java
+
+----------- Java Enums and Annotations (JDK 1.5) ----------
+
+Enums
+	group of related constants defined under a single type
+
+	object of enum type can be only created inside that enum itself
+
+	syntax
+
+	enum <enum-name> {
+
+		<enum-constant-name> [(params...)], // each enum constant is final static by default
+												// each enum is an object of the enum type
+
+		<enum-constant-name> {
+			// functions, variables
+		}
+
+		[variables;        ]*
+		[normal functions; ]*
+		[abstract method;  ]* // each instance has to implement these methods
+
+		[<enum-name> (params...) {}] // optional constrcutor if you used some parameters to define the
+									 // constants
+
+	}
+
+	<enum-constant>.ordinal(); // the related int value
+
+	<enum-type>.values(); // returns an array of all enum values
+
+	enums can implement interfaces
+
+
+Annotations // metadata for the compiler or some code analysis tools
+
+	normal comment
+	/*
+	*/ 
+
+	documentation comment
+	/**
+	*/
+
+	@Override
+	@SupressWarnings ( { strings... } )
+	@Deprecated
+
+	JAXB (Java XML Bind)
+
+		@XmlRootElement(name=<root-name>  )
+		@XmlAttribute  (name=<attrib-name>)
+
+	Custom Annotations
+
+	LINK: https://www.javatpoint.com/custom-annotation
+
+	@Target (value = {element-types ... }) // element-types could be ElementType.METHOD, TYPE, CLASS
+	@Retention // ?????
+	@interface <anotation-name> {
+		<type> <name>(); // ?????
+	}
+
+	use of annotation in component / container architecture
+
+		container is usually provided by vendor. It has all the infrastructure logic
+
+		component is usally provided by developers. It has all the infrastrctue logic
+
+		eg 
+
+		UserController that has login, logout logic is the component
+
+		Routing that routes/maps requests from url to functions is the container
+
+		// note read Reflection API
+
+		container and component should not be tightly coupled.
+
+		That is container should use component then we have to ask the questions where and how?
+
+		But both are created by different teams
+
+		Also containers should be generalized for any underlying component API
+
+		Therefore container expects the component to be decorated with annotations describing how and when
+		to use the component
+
+		eg use login when url user/login is entered
+
+		general structure of container method
+
+			Class<?> cls = Class.forName(<component-class-name>);
+
+			Object instance = cls.newInstance();
+
+			Method[] methods = cls.getMethods();
+
+			for (Method method : methods) {
+				<Annotation> name = method.getAnnotation(<Annotation>);
+
+				if (name != null) {
+					// get annotation info
+					// check annotation info
+					// if fine
+					method.invoke(instance, ...);
+				}
+			}
+
+
+---- Functional Programming in Java ------------
+
+	Declarative vs Imperative programming
+
+
+	Sytnax 
+
+	<Interface-Name> <obj-name> = ([type] name ... ) -> {}
+
+	eg.
+
+	Predicate<Product> filterName = (Product t) -> {
+		// can use local variables;
+	}
+
+
+	The interface-name must have a single abstract method (SAM)
+
+	predicate is on such interface
+
+	@FunctionalInterface
+
+	No class file is creates for these functional interface using the new syntax
+
+
+	java.util.function; // all prebuilt functional interfaces 
+						// avoid creating your own if one already available
+
+
+		Predicate // 1 input -> return bool
+		Supplier // 0 input -> some output
+		Consumer // 1 input -> not output
+		Function // 1 input of a type -> 1 output of another type
+
+		same with Bi for 2 parameter functions
+
+Note:  { 
+	ClassName.class = instance.getClass()
+
+	Maven is a dependency manager
+
+	The info is at mvnrepository
+
+}
+
+
+static {
+	// executes when the class is loaded // ie only once per class
+}
+
+Chain of Responsibility Design Pattern
+
+	link: https://www.journaldev.com/1617/chain-of-responsibility-design-pattern-in-java
