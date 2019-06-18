@@ -1,0 +1,67 @@
+Lecture 10 (18-06-2019) Java
+
+
+Eager vs Lazy
+	
+	Normal methods and parameters Eager
+	Functional Programming (pass computation function) Lazy [better]
+
+	Study streams
+		|
+		|---> IntStream (peek, filter, limit)
+		|
+		|---> 
+
+
+	Scope of function
+
+	Method reference in java
+		String::length, <class-name>::<method-name> 
+		<instance>::<method-name> // use this if instance is available else use class-name
+
+		To refer to constrcutor
+
+		<class-name>::new
+
+		it is a reference to a method in java that can be stored/passed inside an appropriate functional interface
+
+Java 8 interfaces
+
+	default methods
+	static methods
+
+
+	diamond problem
+
+		override
+
+		then use <any-one-super-class>.super.<common-method>
+
+		interface I1 {
+			default void m1() {
+
+			}
+		}
+
+
+		interface I2 {
+			default void m1() {
+
+			}
+		}
+
+		class C implements I1, I2 {
+			@Override
+			void m1() {
+				I1.super.m1(); // optional
+				I2.super.m2(); // optional
+			}
+		}
+
+
+
+Generics
+
+	Bounded type parameters
+
+	https://docs.oracle.com/javase/tutorial/java/generics/index.html
