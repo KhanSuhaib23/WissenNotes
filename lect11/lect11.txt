@@ -1,0 +1,50 @@
+Lecture 11 (19-06-2019)
+
+HashSet
+	|
+	|---> hashcode is used to decide the bucket
+	|
+	|---> in a bucket equals is used to check if not repeating
+
+
+if hash code overrides then override equals
+
+HashSet internally uses HashMap (memory waste??)
+
+---> Properties <---
+
+
+Streams
+
+	|---> filter
+	|
+	|---> map
+	|
+	|---> reduce
+	|
+	|---> forEach (terminal)
+	|
+	|---> generate
+	|
+	|---> iterate
+	|
+	|---> peek
+	|
+	|---> distinct
+	|
+	|---> takeWhile (JDK 1.9)
+	|
+	|---> dropWhile (JDK 1.9)
+	|
+	|---> sum (terminal)
+	|
+	|---> count (terminal)
+	|
+	|---> allMatch, anyMatch, noneMatch (terminals)
+	|
+	|---> toArray (terminal)
+	|
+	|---> collect (terminal) [can do grouping by]
+
+
+
