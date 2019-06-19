@@ -4,7 +4,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -46,10 +45,10 @@ public class TodoService {
 	
 	public void toggleTodoCompleteAll() {
 
-		boolean allSame = todos.values().stream().map(t -> t.isComplete()).allMatch(t -> t);
+		boolean allComplete = todos.values().stream().allMatch(t -> t.isComplete());
 		
 		for (Integer key: todos.keySet()) {
-			todos.get(key).setComplete(!allSame);
+			todos.get(key).setComplete(!allComplete);
 		}
 			
 	}
@@ -82,7 +81,7 @@ public class TodoService {
 		
 		todos.values().stream().forEach(System.out::println);
 		
-		TimeUnit.MILLISECONDS.sleep(500);
+//		TimeUnit.MILLISECONDS.sleep(500);
 	}
 	
 	
@@ -92,7 +91,7 @@ public class TodoService {
 		
 		todos.stream().forEach(System.out::println);
 		
-		TimeUnit.MILLISECONDS.sleep(500);
+//		TimeUnit.MILLISECONDS.sleep(500);
 	}
 
 }
