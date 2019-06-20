@@ -1,0 +1,22 @@
+Lecture 12 (20-06-2019) Java 
+
+
+gcc-mingw: https://sourceforge.net/projects/mingw-w64/
+
+
+If the static method is synchronized then the class object is used for synchronization
+
+If the non static method is synchronized then the instance is used for synchronization
+
+synchronized block
+
+syncrhonized (key) {
+	
+}
+
+key is a static object
+
+key = <class-name>.class
+
+
+java concurreny in practice <---- book
