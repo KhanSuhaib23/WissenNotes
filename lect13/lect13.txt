@@ -1,0 +1,35 @@
+Lecture 13 JAVA 21-06-2019
+
+Akka framework
+
+Use ThreadPools insteads of threads
+
+	For this we have ExecutorService
+	Executors // factory
+
+		fixedthreadpool
+		singlethreadpool
+		cachedthreadpool
+
+Runnable and Callable design patterns
+
+
+With runnable you cannot have it return objects, know when it is done, etc.
+
+Lock
+	|
+	|---> ReentrantLock
+	|
+	|---> Condition (created using lock objects) [await() and signal()]
+	|
+	|---> ReadWriteLock
+	|		|
+	|		|---> ReentrantReadWriteLock
+	|
+	|---> CyclicBarrier
+	|
+	|---> CountDownLatch // instead of join in thread pools
+
+
+/--------- Network ------------/
+
