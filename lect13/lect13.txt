@@ -80,3 +80,14 @@ references book(isbn)
 /
 
 
+select b.isbn ISBN, b.title Title, p.name Publisher, b.price Price, ch.tchaps Chapters, ch.tpages Pages
+from (publisher p 
+join book b
+on p.id = b.publisher_id)
+join 
+(select c.book_isbn bisbn, count(c.chapter_index) tchaps, sum(c.pages) tpages
+from chapter c group by c.book_isbn) ch
+on ch.bisbn = b.isbn;
+/
+
+
