@@ -1,6 +1,7 @@
 package com.client;
 
 import java.io.BufferedReader;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -16,42 +17,46 @@ import java.util.concurrent.Executors;
 public class Messenger {
 
 	private static String name;
-
+	
+	private volatile static boolean active = true;
+	
 	public static void userInput(Socket socket) {
 
 		try {
-			System.out.println("Started user input thread");
 			OutputStream os = socket.getOutputStream();
 			ObjectOutputStream oos = new ObjectOutputStream(os);
 
-			while (true) {
+			while (active) {
 
 				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
+				
+				System.out.print("> ");
+				
 				String message = br.readLine();
 
 				oos.writeObject(message);
 
-//				oos.flush();
 			}
+			
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		} 
+		
+		
 
 	}
 
 	public static void displayMessage(Socket socket) {
 
-		System.out.println("Started display message thread");
 
 		try {
 			InputStream is = socket.getInputStream();
 			ObjectInputStream ois = new ObjectInputStream(is);
 
-			while (true) {
+			while (active) {
 
 				String message = (String) ois.readObject();
-				System.out.println(message);
+				System.out.println("\b\b" + message + "\n> ");
 
 			}
 
@@ -59,6 +64,8 @@ public class Messenger {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+		} finally {
+			active = false;
 		}
 
 	}
@@ -81,9 +88,9 @@ public class Messenger {
 			threadPool.submit(() -> {
 				userInput(socket);
 			});
-			// threadPool.submit(() -> {
-			// displayMessage(socket);
-			// });
+			 threadPool.submit(() -> {
+			 displayMessage(socket);
+			 });
 
 		} catch (UnknownHostException e) {
 			e.printStackTrace();

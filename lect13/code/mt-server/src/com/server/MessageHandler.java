@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -17,47 +18,61 @@ import java.util.concurrent.locks.ReentrantLock;
 public class MessageHandler {
 
 	public static Map<String, Socket> connectedClient = new HashMap<>();
+	public static Map<String, ObjectOutputStream> outputStreams = new HashMap<>();
 	public static Lock lock = new ReentrantLock();
 
 	public static void sender(String name) {
-
-		Socket socket = connectedClient.get(name);
 		
-		InputStream is = socket.getInputStream();
-		ObjectInputStream ois = new ObjectInputStream(is);
-		System.out.println("Waiting for message from " + name);
 		
-		while (!socket.isClosed()) {
+		try {
+			
+			Socket socket = connectedClient.get(name);
+			
+			InputStream is = socket.getInputStream();
+			ObjectInputStream ois = new ObjectInputStream(is);
+			System.out.println("Waiting for message from " + name);
+			
+			while (!socket.isClosed()) {
 
-
-				String message = (String) ois.readObject();
-
-				System.out.println("Recieved message " + message + " from " + name);
-
-				lock.lock();
-				for (Socket otherSocket : connectedClient.values()) {
-					
-					if (otherSocket != socket) {
-						
-						System.out.println("Sending to ");
-						
-						OutputStream sos = otherSocket.getOutputStream();
-						ObjectOutputStream soos = new ObjectOutputStream(sos);
-
-						soos.writeObject("[" + name + "] : " + message);
-
+					String message = null;
+				
+					try {
+						message = (String) ois.readObject();						
+					} catch (SocketException e) {
+						break;
 					}
 
-				}
-				lock.unlock();
+					System.out.println("Recieved message " + message + " from " + name);
+
+					lock.lock();
+					for (String recieverName : connectedClient.keySet()) {
+						
+						ObjectOutputStream clientOos = outputStreams.get(recieverName);
+						
+						if (!recieverName.equals(name)) {
+							
+							clientOos.writeObject("[" + name + "] : " + message);
+
+						}
+
+					}
+					lock.unlock();
 
 
+			}
+			
+			lock.lock();
+			System.out.println(name + " disconnected");
+			connectedClient.remove(name);
+			outputStreams.get(name).close();
+			outputStreams.remove(name);
+			lock.unlock();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
-		lock.lock();
-		System.out.println(name + " disconnected");
-		connectedClient.remove(name);
-		lock.unlock();
+		
 
 	}
 
@@ -76,10 +91,14 @@ public class MessageHandler {
 				InputStream is = socket.getInputStream();
 				ObjectInputStream ois = new ObjectInputStream(is);
 
+				OutputStream os = socket.getOutputStream();
+				ObjectOutputStream oos = new ObjectOutputStream(os);
+
 				String name = (String) ois.readObject();
 
 				lock.lock();
 				connectedClient.put(name, socket);
+				outputStreams.put(name, oos);
 				lock.unlock();
 
 				serverThreadPool.submit(() -> {
