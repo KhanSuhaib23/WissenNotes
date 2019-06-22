@@ -1,8 +1,5 @@
 package com;
 
-import java.util.Optional;
-
-import com.model.Product;
 import com.repo.JDBCProductRepository;
 
 public class App {

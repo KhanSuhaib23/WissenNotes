@@ -29,8 +29,6 @@ public class JDBCBookRepository implements BookRepository {
 	@Override
 	public void getInfo() {
 
-		List<BookInfo> result = new ArrayList<>();
-
 		try {
 			Connection connection = SQLConnectionFactory.getConnection();
 
