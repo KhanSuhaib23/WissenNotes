@@ -33,3 +33,50 @@ Lock
 
 /--------- Network ------------/
 
+Never close the Input or Output stream
+
+It sends EOF to whoever is reading the stream
+
+It disconnects everything
+
+
+
+/--------- SQL ------------/
+
+
+Connection
+	|
+	|---> register jdbc driver
+	|			|
+	|			|---> search <dbms-name> jdbc driver
+	|
+	|---> create new connection and return it
+
+Class.forName(<driver class name>); // register the driver given by the class name
+
+DriverManager.getConnection(url, ...);
+
+PreparedStatement
+
+
+
+Oracle Class Name->  oracle.jdbc.driver.OracleDriver
+Oracle URL->         jdbc:oracle:thin:@localhost:1521:orcl
+
+
+Option<class-name> // 
+
+
+create table chapter (
+chapter_index number,
+title varchar2(100),
+pages number,
+book_isbn number,
+constraint chapter_pk primary key (chapter_index, book_isbn),
+constraint book_fk
+foreign key (book_isbn)
+references book(isbn)
+)
+/
+
+

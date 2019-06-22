@@ -1,0 +1,68 @@
+Lecture 14 Java (22-06-2019)
+
+
+Abstract Classes
+	
+	InputStream 
+	OutputStream
+
+	Reader
+	Writer
+
+	source: file
+
+	-FileInputStream // byte stream (ascii or binary)
+	-FileOutputStream 
+
+	-FileReader // char stream (text)
+	-FileWriter
+
+	source: buffer
+
+	-BufferedInputStream // byte stream with buffer to make efficient
+	-BufferedOutputStream
+
+	-BufferedReader // char stream ''' 
+	-BufferedWriter
+
+	data/type-conversion-types while IO
+
+	-ObjectOutputStream // object to underlying stream
+	-ObjectInputStream
+
+	-DataOutputStream // primitive to underlying stream
+	-DataInputStream
+
+	-InputStreamReader // 8-bit to 16-bit
+	-InputStreamWriter
+
+	print/write data on any source
+
+	-PrintStream
+	-PrintWriter
+
+
+
+------ Serialization ------
+
+Java Object -> Binary Format / Byte Stream to store or transfer
+
+implements Serializable (marker interface)
+
+Get a Object{}Stream and then convert from and to objects
+
+Then put in file using a stream file writer
+
+Serializable should be recursive
+
+implements Externalizable (not marker class) extends Serializable
+
+	|
+	|---> writeExternal 
+	|
+	|---> readExternal // additional object to read and write doesn't work apparently
+
+
+
+
+itext library (pdf external library)

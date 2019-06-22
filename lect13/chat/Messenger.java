@@ -31,6 +31,7 @@ public class Messenger {
 				System.out.print("> ");
 				
 				String message = br.readLine();
+				
 
 				oos.writeObject(message);
 
