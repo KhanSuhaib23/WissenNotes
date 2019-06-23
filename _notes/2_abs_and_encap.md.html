@@ -1,0 +1,78 @@
+<meta charset="utf-8">
+
+**Abstraction and Encapsulation in Java**
+
+*How it is implemented*
+
+* using access specifier (private members are obfuscated while public members for the interface)
+* using packages (modularize)
+* using accessor methods (getters and setters)
+* using class and interface
+* using design patterns
+
+*Recommended Type Heirarchy for Java Modules*
+
+- top level     : Abstraction using interfaces 
+- middle level  : Partial Abstraction using abstract classes
+- bottom level  : Full Implementation using classes
+
+*Example*
+
+* Collection (only has an interface mentioning the common operations that can be performed like add, delete, etc.)
+ * Linear (abstract class which implements simple common methods to Linear data strctures like get, set and find)
+  * DynamicArray (normal class, provides complete specific implementation)
+  * StaticArray ('same')
+
+*Object Oriented (SOLID) Principles*
+
+ * <b>S</b>ingle Responsibility Principle : classes should have a single responsibility
+ * <b>O</b>pen  Closed Principle : classes should be open to extension (adding new fields and behaviour) but closed for modification (the interface available to the user must be consistent through changes)
+ * <b>L</b>iskov Substitution Principle : functions with reference to a super/base class must be able to use the sub/child class's functions without knowing it (dynamic dispatch, vtable)   
+ * <b>I</b>nterface Segregation Principle : users should be forced to depend on functionalities it doesn't need. That means interfaces must be as small as possible
+ * <b>D</b>ependency Inversion Principle : high level modules should not depend upon low level modules but on interfaces/abstractions. Abstractions should not depend upon details, Details should depend upon abstractions
+
+
+*Specialization and Generalization*
+
+ * Every specialized implementation must have a generalized interface providing means for access
+ * Say we have classes for ArialFont, TimesFont, LiberationFont then we must have a Font interface that each of these implements
+ * The common methods must be there in the generalized interfaces
+ * The special methods must be there in the classes
+ * Always instantiate the special class and store it in the general class's variable (unless access to special funtions are needed)
+  
+ ~~~~~~~~~~~~~~~~~~ java 
+ Font arial = new ArialFont(); 
+ ~~~~~~~~~~~~~~~~
+
+*Dependent and Dependency*
+
+* Dependent depends upon the Dependency
+* Therefore Dependent needs a reference to the Dependency
+* This can be achieved in a few ways
+* *<b>First Way</b>*
+ * Create an instance of the Dependency in the Dependent
+ * Issue 1: Tight coupling between the Dependent and Dependency
+ * Issue 2: Unit Testing not possible
+* *<b>Second Way</b>*
+ * Get the instance from a factory
+ * Issue 1: Needs to know the factory itself. Tight coupling with factory
+ * Issue 2: Still unit testing is hard
+* *<b>Third Way</b>*
+ * Depedent must neither create or find the Dependency
+ * Give the Dependency reference to the Dependent
+ * This is known as Inversion of Control (IoC)
+ * There are 2 ways to implementation IoC
+  * <b>Dependency Injection (DI): </b> Pass the Dependency reference to the Depedent
+   * We can either pass through the constructor (constructor DI) 
+   * or through a setter method (setter DI)
+   * or through a parameter variable (field DI)
+  * <b>Aspect Oriented Programming (AOP)</b>
+
+!!! note
+    Always create a generalized interface for specialized classes having all the common functionalities<br>
+    Make the dependent depend upon the interface not the implementation<br>
+    This way if implementation changes or new implementation is introduced all the Classes dependent on it don't have to change.
+
+
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
