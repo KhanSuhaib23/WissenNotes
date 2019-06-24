@@ -1,0 +1,135 @@
+<meta charset="utf-8">
+
+**Generics in Java**
+
+* Consider we want to make a class that holds a list of some Objects
+* But we don't know when designing the class which objects will be stored in it
+* So we have to create a generic implementation
+
+* Before JDK 1.5 implementations used the fact that every class in Java extends Object class by default
+* That is every class is child of the Object class
+
+~~~~~~~~~~~~~ java
+
+public class List {
+    Object[] objects;
+
+    public List() {
+        objects = new Object[10];
+    }
+
+    public Object get(int index) {
+        return objects[index];
+    }
+
+    public void set(int index, Object object) {
+        objects[index] = object;
+    }
+}
+
+class Main {
+
+    public static void main(String[] args) {
+        List list = new List();
+
+        String s1 = new String("ABC");
+        String s2 = new String("PQR");
+        String s3 = new String("XYZ");
+
+        list.set(0, s1); // implicit casts
+        list.set(0, s2);
+        list.set(0, s3);
+
+        String _s1 = (String) list.get(0); // explicit cast
+    }
+
+}
+
+~~~~~~~~~~~~~
+
+* Issues
+ * Main issue with this is Object is a completely generalized class
+ * We cannot constraint the type of the object that go in
+ * We can store String, Integer, Double, etc. in that Object variable
+ * But when retrieving when we down cast we need to know the exact type
+ * Else we will have a InvalidClassCastException
+
+* Thus we use Generics introduced in JDK 1.5 (Java 5)
+
+
+*Class Level Generic*
+
+* syntax
+
+~~~~~~~~~~ java
+class name &lt; T1, T2, T3, ... , Tn &gt; {
+
+}
+~~~~~~~~~~
+
+* guidelines for naming generic variables
+ * E => Element
+ * K => Key
+ * N => Number
+ * T => Type
+ * V => Value
+ 
+~~~~~~~~~~ java
+class Generic &lt; A, B &gt; {
+    
+    private A a;
+    private B b;
+
+    public void setA(A a) {
+        this.a = a;
+    }
+
+    public void setB(B b) {
+        this.b = b;
+    }
+
+    public A getA() {
+        return a;
+    }
+
+    public B getB() {
+        return b;
+    }
+}
+
+class Main {
+
+    public static void main(String[] args) {
+
+        Generic&lt;String, Integer&gt; gen = new Generic&lt;String, Integer&gt;(); // before Java 8
+        Generic&lt;String, Integer&gt; gen = new Generic&lt;&gt;(); // since Java 8
+
+        gen.setA("hello"); // cannot be anything other than String
+        gen.setB(5);
+
+        String str = gen.getA(); // no casts required
+        Integer it = gen.getB();
+
+
+    }
+}
+~~~~~~~~~~
+ 
+*Generic Functions*
+
+* Generic arguments can be declared at function level 
+
+~~~~~~~~~~~~ java
+
+public static &lt;K, V&gt; boolean areEqual(Pair&lt;K, V&gt; p1, Pair&lt;K, V&gt; p2) {
+    // code here
+} 
+
+// calling
+
+areEqual(p1, p2); // no need to specify type arguments since they are infered
+
+~~~~~~~~~~~~
+
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

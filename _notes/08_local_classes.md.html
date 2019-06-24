@@ -1,0 +1,58 @@
+<meta charset="utf-8">
+
+**Local Classes and Anonymous Classes**
+
+* Classes can be create local to a function
+* These classes can use local function variable (if they are final or effectively final)
+* It can also use any class member variables
+
+~~~~~~~~~~~ java
+
+interface Interface {
+    int method();
+}
+
+class LocalClass {
+
+    Interface getInterface() {
+        final int val1 = 5;
+        int val2 = 6;
+
+        class TempInterfaceImpl implements Interface {
+            int method() {
+                return val1 * val2; 
+                // val1 is final, val2 is effectively final (since it is initialized only once and never changes)
+            }    
+        }
+    }
+
+
+}
+
+~~~~~~~~~~~
+
+* But we are create a named class that isn't used anywhere else
+* Thus we can use anonymous class
+
+~~~~~~~~~~~ java
+
+class LocalClass {
+
+    Interface getInterface() {
+        final int val1 = 5;
+        int val2 = 6;
+
+        return new Interface () {
+            int method() {
+                return val1 * val2;
+            }
+        }
+    }
+
+
+}
+
+~~~~~~~~~~~
+
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

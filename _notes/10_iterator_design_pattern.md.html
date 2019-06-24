@@ -1,0 +1,96 @@
+<meta charset="utf-8">
+
+**Iterator Design Pattern**
+
+* Different Collection data structures have a different way to iterate them
+* Linear Contiguous data structures can be iterated using a simple for loop
+* Linear Linked data structures needs a pointer and moving to next pointer each iteration 
+
+~~~~~~~~~~~~ c
+
+// C Code
+
+void function() {
+
+    int arr[n];
+
+    for (int i = 0; i &lt; length(arr); i++) {
+        int val = arr[i];
+    }
+
+    list* curr = my_list;
+
+    while (curr != null) {
+        int val = curr-&gt;data;
+        curr = curr-&gt;next;
+    }
+
+}
+
+~~~~~~~~~~~~
+
+* So it is best that each data structure provides an iterator that contains the iteration logic itself
+* In java this is done using Iterable and Iterator interface
+* The Iterable interface forces the class to implement iterator() function 
+* The iterator function returns an Iterator
+* The Iterator is a class that implements the Iterator interface
+* The Iterator interface forces the class to implement hasNext() and next() functions
+
+~~~~~~~~~~~~ java
+
+class MyCollection&lt;E&gt; implements Iterable {
+
+    // other member variable and functions
+
+    Iterator&lt;E&gt; iterator() {
+
+        return new Iterator&lt;E&gt; () {
+
+            bool hasNext() {
+
+            }
+
+            E next() {
+
+            }
+
+        }        
+
+    }
+
+}
+
+~~~~~~~~~~~~
+
+* Once we have implemented the iterator function we can iterate the collection using 2 methods
+
+~~~~~~~~~~~ java
+
+class Main {
+    public static void main(String[] args) {
+        MyCollection&lt;String&gt; list = new MyCollection&lt;&gt;();
+
+        // adding to lists 
+
+        Iterator&lt;String&gt; iter = list.iterator();
+
+        // method 1 : while loop
+        
+        while (iter.hasNext()) {
+            String str = iter.next();
+        }
+
+        // method 2 : for each loop
+
+        for (String str : list) {
+            
+        }
+
+
+    }
+}
+
+~~~~~~~~~~~
+
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

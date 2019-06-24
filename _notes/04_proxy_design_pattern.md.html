@@ -1,0 +1,95 @@
+<meta charset="utf-8">
+
+**Proxy Design Pattern**
+
+* consider you have a class Database that is responsible for accessing the database
+* you have 2 method in there read and write 
+* each method first does authentication then authorization
+* then it does the operation
+* logs it and returns
+* consider we make the following class
+
+~~~~~~~~~~~~~ java
+
+class Database {
+
+    public void read() {
+        DBSecurity.authenticate();
+        DBSecurity.authorize();
+        /*
+            do read operations ... 
+        */
+        Logger.log();
+    }
+
+
+    public void write() {
+        DBSecurity.authenticate();
+        DBSecurity.authorize();
+        /*
+            do write operations ... 
+        */
+        Logger.log();
+    }
+}
+
+~~~~~~~~~~~~~
+
+* this doesn't offer good design because there is a tight coupling between the business logic and other logic
+* if business logic is too be change one has to comb through all the other logic going through
+
+So instead we make it so that the original class only does the actual logic
+
+~~~~~~~~~~~~~ java
+
+abstract class Database {
+
+    public void read() {
+        /*
+            do read operations ... 
+        */
+    }
+
+
+    public void write() {
+        /*
+            do write operations ... 
+        */
+    }
+
+}
+
+~~~~~~~~~~~~~
+
+* then we extend a proxy class from this 
+* the proxy class does all the other logic 
+* when it needs the actual logic it just make a call to the super function
+
+~~~~~~~~~~~~~ java
+
+class DatabaseProxy extends Database {
+
+    public void read() {
+        DBSecurity.authenticate();
+        DBSecurity.authorize();
+        super.read(); // actual business logic in this function 
+        Logger.log();
+    }
+
+
+    public void write() {
+        DBSecurity.authenticate();
+        DBSecurity.authorize();
+        super.read(); // actual business logic in this function 
+        Logger.log();
+    }
+}
+
+
+~~~~~~~~~~~~~
+
+* then anyone just instantiates the Proxy class and uses it to call the functions 
+* when business logic is to be changed only the base class is modified
+* the base class can be made abstract to prevent instantiation
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

@@ -1,0 +1,141 @@
+<meta charset="utf-8">
+
+**Java Exceptions**
+
+Exceptions are unexpected distrubance that changes the control flow of program
+
+*Reasons for exceptions*
+
+* invalid input
+* IO problems
+* SQL issues
+* Network issues
+* condition fails
+* ...
+
+*What happens?*
+
+* by default runtime terminates
+* so we must handle the exception and when possible recover from it
+* this is done using proper exception handling
+
+*Advantages of Exceptions over traditional Error Handling*
+
+* Seperating Error Handling Code from Normal Code
+
+C Code
+~~~~~~~~~~~~~~ c
+
+int function() {
+    // do something
+    if (cond) {
+        // do somethin
+        if (cond) {
+            // do something
+        }
+        else {
+            // error handling
+        }
+    } else {
+        // error handling
+    } else {
+        error handling
+    }
+}
+~~~~~~~~~~~~~~
+
+Java Code
+
+~~~~~~~~~~~~ java
+
+int method() {
+
+    try {
+        // do something
+        // do something
+        // do something
+    } catch (Exception1 e) {
+        // error handling
+    } catch (Exception2 e) {
+        // error handling
+    } catch ... {
+        // error handling
+    }
+
+}
+
+~~~~~~~~~~~~
+
+* Propogating Error up the Call Stack
+ * in C this is done using return values
+ * hard to manage 
+ * in java to handle use try/catch 
+ * to propogate throw it
+
+* Grouping and Differentiating Error Types
+ * in C this is done by error code
+ * hard to maintain 
+ * Exception better for this
+
+
+*Error/Exception Hierarchy*
+* Throwable
+ * Exception // check exception. Compiler forces the caller to handle the exceptions. eg IOException, InterruptedException, etc.
+  * RuntimeException // uncheck exception. Compiler doesn't force. eg ArrayIndexOutOfBoundsException, ArithmeticException, etc.
+ * Error // things where it is not possible to recover from. StackOverflow, etc.
+
+*Creating your own Exceptions"
+
+~~~~~~~~~~~ java
+
+class MyException extends [Exception, RuntimeException] {
+
+    // java suggest to make exceptions check if the user can reasonably recover from them
+    // other reasons may include if it would be too cumbersome to force the user to handle then make unchecked
+    // another reason might be if the user can avoid the exception through their code itself make it unchecked
+
+    public MyException(String message) {
+        super(message);
+    }
+
+}
+
+~~~~~~~~~~~
+ 
+*Throwing Exception*
+
+* use throw new Exception("message");
+* the place where you are throwing the Exception from you need to use throws Exception on the method/class
+* you can also rethrow exceptions you catch
+
+
+*try/catch/finally*
+
+* try block is used to enclose all the statements that could throw exceptions
+* catch block(s) could handle one or more Exceptions
+* finally executes regaurdless of whether Exception arose or not
+* it is used to do clean
+* difference between finally and just adding code after the try/catch blocks is that finally is executed even if we return in the try catch block
+* however finally is not executed if the runtime is stopped (using something like System.exit(0))
+
+~~~~~~~~~~~~ java
+
+try {
+     
+} catch (Exception1 &#124; Exception2 e) {
+
+    e.printStackTrace(); // stops the program and prints the stack trace of the exception
+
+} catch (Exception3 e) {
+
+    throw e; // rethrow exception
+
+} finally {
+
+}
+
+
+~~~~~~~~~~~~
+
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
