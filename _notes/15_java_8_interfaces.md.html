@@ -1,0 +1,37 @@
+<meta charset="utf-8">
+
+**Java 8 Interfaces**
+
+* interfaces can now have default interfaces
+* it can be used if interface needs to be extended without changing the implementations
+* default methods are forced to be overriden
+
+* can lead to diamond problem
+* so if we are implementing 2 interfaces with method of same name with default implementations we are forced to override it
+
+~~~~~~~~~~~ java
+
+interface I1 {
+    default void m() {
+        System.out.println("I1: m()");
+    }
+}
+
+interface I2 {
+    default void m() {
+        System.out.println("I2: m()");
+    }
+}
+
+class C {
+    void m() {
+        I1.m(); // optional
+        I2.m(); // optional
+
+        System.out.println("C: m()");
+    }
+}
+~~~~~~~~~~~
+
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

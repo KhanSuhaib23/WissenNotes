@@ -1,0 +1,31 @@
+<meta charset="utf-8">
+
+**Java Stream API**
+
+* The java stream API is an API can allow various functions to be carried out on a stream consecutively
+* The output of one is piped to the next and so on...
+* This is done until a terminal function is reached that returns some result
+* Stream API can be used on any Iterable collection
+* The stream operations are lazy and are thus evaluated only when they are needed
+
+*Using Stream API*
+
+* .stream() function returns a stream on which now operations can be performed
+* Then we can apply one of many non terminal functions one after another
+ * .filter() takes in a predicate and filters the stream to only contain elements that satisfy the predicate (like selection)
+ * .map() takes in an Object and returns an object of different type. (like projection)
+ * .sorted() returns a sorted stream based on the compare function in the Object (if it implements Comparable interface) or we can 
+ pass in a comparator function. (if both are present comparator function is given precedence)
+* Finally we have non terminal operations
+ * .collect() can be used to return a list, sum, average, etc.
+ * .forEach() iterate all the elements of the stream, takes in a consumer 
+ * .reduce() performs an aggregation function
+
+*Other Functions*
+
+* .removeIf() takes in a predicate and removes element if true
+
+
+[Stream Function List](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html)
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

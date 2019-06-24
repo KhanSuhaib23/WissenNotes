@@ -217,5 +217,47 @@ void mymethod() {
 
 ~~~~~~~~~~~~
 
+*Lazy Evaluation*
+
+* Functions are evaluated when they are needed instead of where they are passed
+
+~~~~~~~~~~~~ java
+
+public class Main {
+
+    public static String getSystemLog() {
+        TimeUnit.SECONDS.sleep(5);
+        return "log message";
+    }
+
+    public static String eager(String str, String error) {
+        if (str == null) {
+            return error;
+        }
+        return "all done";
+    }
+
+    public static String lazy(String str, Producer&lt;String&gt; messager) {
+        if (str == null) {
+            return messager.put(); // expensive function only evaluated when needed
+        }
+
+        return "all done";
+    }
+
+    public static void main(String[] args) {
+
+        eager("hello", getSystemLog()); // getSystemLog is an expensive function but it get evaluated regaurdless of whether we need it or not
+
+        lazy("hello", () -> {
+            TimeUnit.SECONDS.sleep(5);
+            return "error message";
+        });
+    }
+
+}
+
+~~~~~~~~~~~~
+
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
