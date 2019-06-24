@@ -1,0 +1,221 @@
+<meta charset="utf-8">
+
+
+**Functional Programming in Java**
+
+* In standard declarative programming usually the How and What logic is usually tightly coupled
+* example
+
+~~~~~~~~~ java
+
+class Product {
+    private int id;
+    private String name;
+    private double price;
+
+    // implementation
+}
+
+class Process {
+    List&lt;Product&gt; products;
+
+    Product getByID(int id) {
+        for (Product product : products) {
+            if (product.id == id) {
+                return product;
+            }
+        }
+
+        return null;
+    }
+
+    Product getByName(String name) {
+        for (Product product : products) {
+            if (product.getName().equals(name)) {
+                return product;
+            }
+        }
+
+        return null;
+    }
+
+}
+
+~~~~~~~~~
+
+
+* The iterating logic (the how) remains same.
+* The conditional logic (the what) however changes
+* But with declarative programming this coupling is inevitable
+* In functional programming we can pass in a function on which basis we want to evaluate the condition
+
+*Java Support for Functional Programming*
+
+* Everything in Java has to be an object
+* So supporting functional programming is difficult
+* However java provided ways to do it using functional interfaces
+* A Functional interface is an interface with only one unimplemented function
+* So java allows the assignment of a function to variable of such an interface 
+* First let's see how this lack of functional programming support affected Java Programming
+
+*Using Local Classes*
+
+~~~~~~~~~~ java
+
+class Process {
+
+
+    Product get(Predicate&lt;Product&gt; condition) { // Predicate is a inbuilt java interface that implements a single method
+        // the method is called test and it takes in any object and return a boolean
+        
+        for (Product product : products) {
+            if (condition.test(product)) {
+                return product;
+            }
+        }
+
+    }
+
+}
+
+class Main {
+
+    public static void main(String[] args) {
+
+        class MyPredicate&lt;String&gt; implements Predicate {
+            public boolean test(String obj) {
+                return obj.equals("Laptop");
+            }
+        }
+
+        Process p = new Process();
+
+        p.get(new MyPredicate());
+
+    }
+
+}
+
+~~~~~~~~~~
+
+* Issue 1: very cumbersome to write
+* Issue 2: multiple useless class files created
+
+*Using Anonymous Local Classes*
+
+~~~~~~~~~~ java
+class Main {
+
+    public static void main(String[] args) {
+
+        Predicate p = new Predicate() {
+            public boolean test(String obj) {
+                return obj.equals("Laptop");
+            }
+        }
+
+        Process p = new Process();
+
+        p.get(p);
+
+    }
+
+}
+
+~~~~~~~~~~
+
+* Issue 1: Still pretty cumbersome
+* Issue 2: Anonymous classes still create useless class files
+
+* Solution would be to pass a function directly to it
+* The function syntax must be concise 
+* Java should automatically cast it to an object 
+* No class file should be created
+
+*Using Functional Programming*
+
+~~~~~~~~~~ java 
+
+class Main {
+
+    public static void main(String[] args) {
+
+        // Predicate has a single method that takes in an GenericType and returns boolean
+
+        Predicate p1 = (Product p) -> boolean {
+            return p.getId() == 101;
+        };
+
+        // Java can infer the type of the input and the return type so we can just not write them
+
+        Predicate p2 = (p) -> {
+            return p.getId() == 101;
+        };
+
+        // If there is a single input then no need of ()
+
+        Predicate p3 = p -> {
+            return p.getId() == 101;
+        }
+
+        // If there is a single return statement we can use
+
+        Predicate p4 = p -> p.getId() == 101;
+
+        Process process = new Process();
+
+        process.get(p1);
+
+        // p1 == p2 == p3 == p4
+    }
+
+}
+
+
+~~~~~~~~~~
+
+*Prebuilt Functional Interfaces in Java*
+
+* [All the functional interfaces inbuilt in Java](https://docs.oracle.com/javase/8/docs/api/java/util/function/package-summary.html)
+* If something other than this is needed create your own
+
+*Creating a Functional Interface*
+
+~~~~~~~~~ java
+
+interface FunctionalInterface {
+
+    public [return-type] [function-name] (params...); // only a single function
+
+}
+
+// can be used like any inbuilt functional interface
+
+~~~~~~~~~
+
+*Function Pointers*
+
+~~~~~~~~~~~~ java
+
+void mymethod() {
+
+    Consumer&lt;String&gt; c; // Consumer is an interface that takes in the GenericType and returns nothing
+    
+    // say we just want to print it
+    // we could do
+
+    c = str -> System.out.println(str);
+
+    // How ever println is also a function that takes in String and returns nothing
+    // So we can give c a function pointer of println
+
+    c = System.out::println;
+
+    // both approaches are the same
+
+}
+
+~~~~~~~~~~~~
+
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

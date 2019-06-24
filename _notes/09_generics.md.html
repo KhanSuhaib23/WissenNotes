@@ -131,5 +131,36 @@ areEqual(p1, p2); // no need to specify type arguments since they are infered
 
 ~~~~~~~~~~~~
 
+*Bounded Type Parameter*
+
+* java allows to add constraints to the type argument
+* using the extends keyword we can limit the possible type arguments to the subclass of specified interfaces and classes
+* syntax
+~~~~~~~~~~~ java
+
+class &lt; T extends classname [& interface1 & interface2 & ... interfacen] &gt; {
+
+}
+
+// same can be used with functions
+
+~~~~~~~~~~~
+
+*Wild Card*
+
+* ? can be used instead of a type argument when it is not to be named
+* it can also be used when we don't know the type parameter we are expecting 
+
+
+~~~~~~~~~~~~~ java
+
+void sum (List&lt;? extends Number&gt; list) { // list has an unnamed type that is sub class of Number
+
+List&lt;?&gt; list = SomeClass.getList();
+    
+}
+
+~~~~~~~~~~~~~
+
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

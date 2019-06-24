@@ -1,0 +1,100 @@
+<meta charset="utf-8">
+
+**Java Annotations**
+
+* annotations are used to mark classes, methods or parameters with some metadata
+* this metadata is either uses by the compiler or some other module to infer additional information about the function
+* say there is a testing framework and you want it to test certain funtions
+* In C you could use function pointers but that doesn't work as well in Java
+* So instead we can say mark the methods to test with @Test annotation
+* The testing code then analyzes the code to find this annotation and calls this function
+* Annotations can have values in them as well
+
+*Default Exception*
+* @Override: if the following method is an Override nothing else compiler time error
+* @SuppressWarnings: make warnings go away
+* @Deprecated: used by many IDEs to mark methods in a module as not to be used anymore
+
+*Annotation Creation*
+
+~~~~~~~~~ java
+
+// @Target specifies where this annotation can be used method, class or type (parameter)
+@Target (value = { ElementType.METHOD &#124; ElementType.CLASS &#124; ElementType.TYPE , ... })
+// @Retention specifies till when and how the metadata is to be retained
+// CLASS   =>  recorded in the class file discarded at runtime
+// RUNTIME =>  retained in the class file retained at runtime
+// SOURCE  =>  only used at compile time (only used if you are writing your own tool for java language)
+@Retention (value = RetentionPolicy.CLASS &#124; RetentionPolicy.RUNTIME &#124; RetentionPolicy.SOURCE)
+@interface AnnotationName { // annotation called Test
+
+    [type variableName() default defaultValue];*
+}
+
+// example
+
+@Target (value = ElementType.METHOD)
+@Retention (value = RetentionPolicy.RUNTIME)
+@interface Test { // annotation called Test
+
+    String input() /* value in the annotation */ default "" /* default value is empty string */;
+}
+
+~~~~~~~~~
+
+*Annotating*
+
+~~~~~~~~~~ java
+
+class UnderTest {
+
+    @Test (input = "Hello World")
+    void funcTest(String value) {
+        // function
+    }
+
+}
+
+~~~~~~~~~~
+
+
+*Using Annotation Information*
+
+~~~~~~~~~~~~ java
+
+public class Tester  {
+
+    public static void main(String[] args) {
+
+        Class&lt;?&gt; classUndertest = UnderTest.class; // each class in Java has a associated class object
+
+        Object instance = classUndertest.newInstance(); // instantiate the class
+
+        Method[] methods = classUndertest.getMethods();
+
+        for (Method method : methods) {
+            Test annot = method.getAnnotation(Test.class);
+
+            if (annot != null) { // the method has been annotated using the given annotation 
+                String input = annot.input();
+
+                method.invoke(instance, input);
+            } 
+
+        }
+        
+
+
+    }
+
+}
+
+~~~~~~~~~~~~
+
+!!! note
+    Annotations are used when you are interfacing with an API and that API needs something from you<br>
+    So that API needs to call you. So to tell the API what it needs to call you annotate it based on what the API creators defined
+
+
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>

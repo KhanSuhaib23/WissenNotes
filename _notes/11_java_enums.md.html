@@ -1,0 +1,87 @@
+<meta charset="utf-8">
+
+**Java Enums**
+
+* enums are final static instances of their own class
+* instead of using a class then we can simply use an enum
+* enums can have variables, methods and constructors
+
+*Creating an enum*
+~~~~~~~~~ java
+
+public enum Direction {
+	
+	UP(0) { // 2. UP is a final static instance of Direction calling the constructor with value 1
+		String getMessage() { // 5. overriding the getMessage method in the UP instance
+			return "Going Up";
+		}
+	},
+	DOWN(1) {
+		String getMessage() {
+			return "Going Down";
+		}
+	},
+	LEFT(2) {
+		String getMessage() {
+			return "Going Left";
+		}
+	},
+	RIGHT(2) {
+		String getMessage() {
+			return "Going Right";
+		}
+	};
+	
+	int val;
+	
+	Direction(int value) { // 1. constructor 
+		this.val = value;
+	}
+	
+	int getValue() { // 3. method that can be called using any of the enums
+		return val;
+	}
+	
+	String getMessage() { // 4. same as above but can be overriden as well
+		return null;
+	}
+	
+}
+
+
+~~~~~~~~~
+
+*Using an enum*
+
+~~~~~~~~~ java
+
+void method() {
+    Direction up = Direction.UP;
+
+    System.out.println(up == Direction.UP); // prints true
+    System.out.println(up == Direction.DOWN); // prints false
+
+    System.out.println(up.getValue()); // print 0, calls the default method we created
+    System.out.println(up.getMessage()); // print Going Up, calls the overriden function we created in UP
+
+    for (Direction dir : Direction.values()) { // iterate all values in the enum Direction.values() return array of Direction that contains all the values
+
+        System.out.println("up is : " + dir.name());
+        // prints the name of the enum variables
+        // UP
+        // DOWN
+        // LEFT
+        // RIGHT
+        
+    }
+
+    // going from String to enum value
+
+
+    Direction down = Direction.valueOf("DOWN");
+
+}
+
+~~~~~~~~~
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
