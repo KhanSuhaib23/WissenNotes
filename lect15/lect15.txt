@@ -1,0 +1,118 @@
+Lecture 15 Java
+
+web servers
+
+	- apache -> http-server
+	- microsoft -> IIS
+	- ngnx
+
+
+npm install live-server // dummy web server
+
+live-server --port=8181 // starts server at 8181
+
+can look at contents of the server at localhost/8181
+
+
+Web Container -> serves -> dynamic resources
+Web Server -> serves -> static resources
+
+In Eclipse to create a new server
+
+File > New Project > Dynamic Web Project
+
+New Runtime > Apache <version> 
+
+Select root folder of the tomcat apache version
+
+Once there you have to add your index.html file inside WebContent
+
+To create a server
+
+Window > Show View > Servers 
+
+If no server add server
+
+Else double click on the given server and cofigure the ports
+
+Finally right click and Run
+
+Then to put your project on the server, drag your project in eclipse left view to the server 
+in the servers view
+
+Or right click project and Run > Run on Server and select the server
+
+Now your servers are live 
+
+Go to localhost:port/project-name/file.html
+
+
+Create a servet
+
+Right Click > New > Servlet
+
+or
+
+Right Click > New > Class
+
+then to make it Servlet
+
+implements GenericServlet (from javax.servlet.*)
+
+Servlet
+|
+|---> GenericServlet
+		|
+		|---> HttpServlet
+
+implements HttpServlet
+
+Servlet Life Cycle Method
+
+init() // like constructor
+
+do[] // like main method
+   |
+   |---> Delete
+   |
+   |---> Get
+   |
+   ...
+
+These methods are passed a HttpServletRequest req and HttpServletResponse res
+
+
+destroy() // like finalize called usually after 20 min of no action
+
+To map URL to a Servlet class
+
+Use 
+
+@WebServlet(urlPatterns = {"/products"})
+
+NOTE: The JAR file here will be in WEB-INF > lib 
+
+		No need to link
+
+NOTE: the root directory here is WebContent (instead of src)
+
+Response provides a PrintWriter with getWriter()
+
+
+But too cumbersome so we introduce JSP
+
+Inside WebContent right click > new > file > *.jsp
+
+Then dispatch the req to jsp
+
+using req.getRequestDispatcher("*.jsp")
+
+req.setAttribute(key, value-object)
+
+In jsp
+
+request.getAttribute(key)
+
+///////////////////
+//  MVC Pattern  //
+///////////////////
