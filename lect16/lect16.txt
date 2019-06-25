@@ -1,0 +1,48 @@
+Lecture 16 (25-06-2019) Java
+
+SlideShare Introduction to Maven
+
+Build Tools
+
+In Maven |-> all source code must be under src > main > java
+		 |-> all configuration file must be under src > main > resources
+		 |-> pom.xml (project object model) file must be in the projects root folder
+		 |-> all test cases inside src > test > java
+
+download maven from maven.apache.org
+then add bin folder of maven to the bin folder
+
+pom.xml
+
+// xml version
+// project tag
+// model version
+// group id (com.wissen)
+// artifact id (usually output project name)
+// version of project
+// project name (not same as artifact id)
+// description 
+// dependencies
+	// dependency
+
+
+mvn compile uses the pom.xml to compile your project
+The output is inside root > target
+
+Important: mvnrepository.com
+
+			Check the library
+			Then copy the dependency xml inside pom.xml
+
+
+mvn compile // compiles main src
+mvn test-compile // compiles test src
+
+mvn test // run test cases reports at root > target > sure-fire reports
+
+mvn package // package into a jar file
+
+
+--------- Spring Framework ------------
+
+Log4j
