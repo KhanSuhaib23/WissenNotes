@@ -46,3 +46,5 @@ mvn package // package into a jar file
 --------- Spring Framework ------------
 
 Log4j
+
+uses log4j.properties
