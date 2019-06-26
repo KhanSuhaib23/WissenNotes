@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:db.properties" />
+	</bean>
+
+	<context:annotation-config />
+
+	<context:component-scan
+		base-package="com.wissen.service,com.wissen.repository">
+	</context:component-scan>
+	
 	<bean id="dataSource"
 		class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="driverClassName"
-			value="oracle.jdbc.driver.OracleDriver" />
-		<property name="url"
-			value="jdbc:oracle:thin:@localhost:1521:orcl" />
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl" />
 		<property name="username" value="suhaib" />
 		<property name="password" value="suhaib" />
 	</bean>
 
-	<bean id="jdbcAccountRepository"
-		class="com.wissen.repository.JdbcAccountRepository">
-		<constructor-arg ref="dataSource" />
-	</bean>
 
-	<bean id="txnService" class="com.wissen.service.NeftTxnService">
-		<constructor-arg ref="jdbcAccountRepository" />
-	</bean>
-	
+
 
 </beans>

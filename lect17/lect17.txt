@@ -1,0 +1,84 @@
+
+
+Ready Made Bean Postprocessors
+
+	- RequiredAnnotationBeanPostProcessor // makes sure all setter methods marked @Required are mandatory // deprecated
+
+	- AutowiredAnnotationBeanPostProcessor 
+	// it will automatically set a dependency marked @Autowired
+	// @Autowired annotations can be marked on constructors, setterMethods or member variables themselves
+	// It will search by type in the context first
+	// If no matching type error
+	// If one matching type that reference is automatically set to the variable
+	// If more than one then search by name of the variable
+	// If no matching name error **
+	// If one name matching then that reference is set 
+	// More than one could not happen
+
+	If we fall into ** and don't want to change the id of our beans we can use a qualifier instead 
+
+	A qualifier is an XML tag used to marker a bean with a qualifier
+
+	example 
+	<bean ... >
+	<qualifier value="myQual" />
+	</bean>
+
+	Then where we are using @Autowired we can use @Qualifer(value = "myQual")
+
+
+	To make something a bean without using XML then mark the class itself as
+
+	@Component("refName")
+
+<context:annotation-config> // includes every BPP needed for Context annotations like @Autowired, @Required, @Qualifier
+
+<context:component-scan base-package="pkg1,pkg2,..."/>
+pkg1, pkg2, ... must be specific as possible
+just com, org are bad. Use atleast 3 level more is better though
+
+You can also exclude stuff
+
+@PostConstruct
+	Mark a method as init() method
+
+Annotations cannot wired Literal using XML in that case
+
+Reflection API can access private members of a class
+
+@Component // these sub types are called stereotype annotations
+	--> @Service // @Component can scans these as well
+	--> @Repository  
+	--> @Controller
+	--> @Configuration
+
+
+@Value(<spring expression language (SpEL)>) // place before a member variable to insert some value based
+on the expression
+
+
+Java Standard Annotation (same functionality as Spring different names)
+	Spring can work with these as well
+	However it is prefered to just use Spring annotation
+
+
+
+Java Based Configuration
+
+	Keep java file in com.wissen.config package // good practice
+
+	Mark class with @Configuration
+	To import multiple configuration in one use @Import(values={...})
+	To scan paths for @ComponentScan (value = {"com.wissen.repository", "com.wissen.service"})
+	To get some properties in the configuration use @PropertySource("path to property")
+
+	Then use an Environment variable that is @Autowired 
+
+	Inside configuration class create method which create references that should be marked @Bean
+
+
+
+AnnotationConfigApplicationContext(ConfigurationClass)
+
+@Transactional (spring-jdbc)
+	runs method as a transaction 

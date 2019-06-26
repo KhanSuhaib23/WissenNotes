@@ -1,82 +1,51 @@
 package com.wissen.repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import javax.sql.DataSource;
 
-import com.wissen.Log;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
 import com.wissen.model.Account;
 
+@Repository("jdbcAccountRepository")
 public class JdbcAccountRepository implements AccountRepository {
 	
-	private DataSource dataSource;
 	
+	private JdbcTemplate jdbcTemplate;
+	
+	@Autowired
 	public JdbcAccountRepository(DataSource dataSource) {
-		this.dataSource = dataSource;
+		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
 	@Override
 	public Account get(String accNum) {
 		
-		Log.ACCOUNT_APP.info("Getting account : " + accNum);
-		
 		Account acc = new Account();
 		
-		try {
-			Connection conn = dataSource.getConnection();
-			String sql = "select * from account where num = ?";
+		String sql = "select * from account where num=?";
+		
+		jdbcTemplate.queryForObject(sql, (rs, rn) -> {
 			
-			PreparedStatement ps = conn.prepareStatement(sql);
+				acc.setAccountNum(rs.getString(1));
+				acc.setBalance(rs.getDouble(2));
 			
-			ps.setString(1, accNum);
-			
-			ResultSet rs = ps.executeQuery();
-			
-			if (rs.next()) {
-				String number = rs.getString(1);
-				double balance = rs.getDouble(2);
-				
-				acc.setAccountNum(number);
-				acc.setBalance(balance);
-			}
-			
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			return acc;
+		}, accNum);
+		
+		
 		return acc;
 	}
 
 	@Override
 	public boolean update(Account account) {
 		
-		Log.ACCOUNT_APP.info("Updating account : " + account.getAccountNum() + " , Balance : " + account.getBalance());
+		String sql = "update account set balance=? where num=?";
 		
-		boolean ret = false;
+		jdbcTemplate.update(sql, account.getBalance(), account.getAccountNum());
 		
-		try {
-			Connection conn = dataSource.getConnection();
-			String sql = "update account set balance=? where num=?";
-			
-			PreparedStatement ps = conn.prepareStatement(sql);
-			
-			ps.setDouble(1, account.getBalance());
-			ps.setString(2, account.getAccountNum());
-			
-			int res = ps.executeUpdate();
-			
-			ret = res == 1;
-			
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return ret;
+		return true;
 	}
 
 	

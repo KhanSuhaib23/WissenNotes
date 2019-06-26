@@ -34,6 +34,13 @@
 			<artifactId>spring-context</artifactId>
 			<version>5.1.8.RELEASE</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>5.1.8.RELEASE</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/commons-dbcp/commons-dbcp -->
 		<dependency>
 			<groupId>commons-dbcp</groupId>
@@ -47,5 +54,13 @@
 			<scope>system</scope>
 			<systemPath>C:\Users\Nexwave\Downloads\ojdbc\ojdbc6.jar</systemPath>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.9.4</version>
+		</dependency>
+
 	</dependencies>
 </project>

@@ -1,37 +1,58 @@
 package com.wissen.service;
 
+import java.time.LocalDateTime;
+import java.util.Random;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.wissen.Log;
 import com.wissen.model.Account;
+import com.wissen.model.Transaction;
+import com.wissen.model.TransactionType;
 import com.wissen.repository.AccountRepository;
+import com.wissen.repository.TransactionRepository;
 
+@Service("txnService")
 public class NeftTxnService implements TxnService {
 	
-	AccountRepository accRepo;
+	@Autowired
+	private AccountRepository accRepo;
 	
+	@Autowired
+	private TransactionRepository txnRepo;
 	
+	private final static Random r = new Random();
 	
-	public NeftTxnService(AccountRepository accRepo) {
-		this.accRepo = accRepo;
+	public NeftTxnService() {
+	
 	}
 	
-	public boolean tranfer(String fromAccNum, String toAccNum, double amount) {
+	@Transactional
+	public boolean transfer(String fromAccNum, String toAccNum, double amount) {
 		
 		Log.ACCOUNT_APP.info("transfering amount : " + amount + " from " + fromAccNum + " to " + toAccNum);
 		
 		Account fromAccount = accRepo.get(fromAccNum);
 		Account toAccount = accRepo.get(toAccNum);
 		
-//		System.out.println(fromAccount);
-//		System.out.println(toAccount);
 		fromAccount.withdrawBalance(amount);
 		toAccount.addBalance(amount);
 		
 
-//		System.out.println(fromAccount);
-//		System.out.println(toAccount);
-//		
 		accRepo.update(fromAccount);
+		
+		Transaction txn = new Transaction(r.nextInt(100000), amount, fromAccount.getBalance(), LocalDateTime.now(), TransactionType.DEBIT, fromAccNum);
+		
+		txnRepo.addTransaction(txn);
+		
 		accRepo.update(toAccount);
+		
+		txn = new Transaction(r.nextInt(100000), amount, toAccount.getBalance(), LocalDateTime.now(), TransactionType.CREDIT, toAccNum);
+		
+		txnRepo.addTransaction(txn);
+		
 		
 		return true;
 	}
