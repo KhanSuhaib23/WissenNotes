@@ -2,14 +2,38 @@ package com.wissen.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "transaction")
 public class Transaction {
 	
+	@Id
 	private int id;
+	
 	private double amount;
+	
+	@Column(name = "closing_balance")
 	private double closingBalance;
+	
+	@Column(name = "date_time")
 	private LocalDateTime dataTime;
+	
+	@Enumerated (EnumType.STRING)
 	private TransactionType type;
-	String accNum;
+	
+	@ManyToOne
+	@JoinColumn (name = "acc_num")
+	private Account account;
+	
+	
 	public int getId() {
 		return id;
 	}
@@ -41,20 +65,20 @@ public class Transaction {
 		this.type = type;
 	}
 	public Transaction(int id, double amount, double closingBalance, LocalDateTime dataTime, TransactionType type,
-			String accNum) {
+			Account account) {
 		super();
 		this.id = id;
 		this.amount = amount;
 		this.closingBalance = closingBalance;
 		this.dataTime = dataTime;
 		this.type = type;
-		this.accNum = accNum;
+		this.account = account;
 	}
-	public String getAccNum() {
-		return accNum;
+	public Account getAccNum() {
+		return account;
 	}
-	public void setAccNum(String accNum) {
-		this.accNum = accNum;
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 	
 	

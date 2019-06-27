@@ -1,0 +1,64 @@
+Lecture 18 Java 27-06-2019
+
+https://www.mkyong.com/maven/how-to-tell-maven-to-use-java-8/ -----> maven Java 8
+
+@Entity
+@Table (name = "", schema = "")
+@Id
+@TableGenerator(name="table_gen", table="pk_table", pkColumnName="next_val")
+@GeneratedValue (strategy = GenerationType.---)
+@Column (name = "")
+@Lob
+@Enumerated (EnumType.---)
+
+Composite Primary Key
+Make a class with them
+Make that class @Embedable and implements Serializable and must have equals and hash code method
+
+Include a variable of that inside the class and mark as @EmbededId
+
+Composite Column (Entity to Non Entity)
+
+same except use @Embedded
+
+If 2 embedded object of the same type then use
+
+@AttributeOverride(name = "og column" column=@Column(name="mapped column"))
+
+If you want to store a list of stuff we need to normalize
+Hiberate does that for us
+
+@ElementCollection
+@CollectionTable (name="other table name", joinColumns = {@JoinColumn(name = {"name1", "name2"})})
+
+
+Entity to Entity
+
+uni-directional - can know transaction from account cannot know account from transaction
+bi-directional - can know from one to other
+
+types of associated
+
+1-1
+1-n
+m-n
+
+way to implement
+
+join column
+join table (for m-n relations and sparse relation)
+
+Pro JPA --------> book 
+
+Objects in the manajed changes reflect the changes made to them until a commit
+
+
+Criteria API
+
+
+Spring Recipes A Press Publication -----------> book
+
+Hibernate Recipes A Press Publication -----------> book
+
+Spring data project
+

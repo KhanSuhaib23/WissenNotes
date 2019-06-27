@@ -1,7 +1,16 @@
 package com.wissen.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "account")
 public class Account {
 	
+	@Id
+	@Column(name = "num")
 	private String accountNum;
 	private double balance;
 
@@ -14,9 +23,6 @@ public class Account {
 		super();
 		this.accountNum = accountNum;
 	}
-
-
-
 
 	public String getAccountNum() {
 		return accountNum;

@@ -14,19 +14,17 @@ import com.wissen.model.TransactionType;
 import com.wissen.repository.AccountRepository;
 import com.wissen.repository.TransactionRepository;
 
-@Service("txnService")
 public class NeftTxnService implements TxnService {
 	
-	@Autowired
 	private AccountRepository accRepo;
 	
-	@Autowired
 	private TransactionRepository txnRepo;
 	
 	private final static Random r = new Random();
 	
-	public NeftTxnService() {
-	
+	public NeftTxnService(AccountRepository accRepo, TransactionRepository txnRepo) {
+		this.accRepo = accRepo;
+		this.txnRepo = txnRepo;
 	}
 	
 	@Transactional
@@ -43,13 +41,13 @@ public class NeftTxnService implements TxnService {
 
 		accRepo.update(fromAccount);
 		
-		Transaction txn = new Transaction(r.nextInt(100000), amount, fromAccount.getBalance(), LocalDateTime.now(), TransactionType.DEBIT, fromAccNum);
+		Transaction txn = new Transaction(r.nextInt(100000), amount, fromAccount.getBalance(), LocalDateTime.now(), TransactionType.DEBIT, fromAccount);
 		
 		txnRepo.addTransaction(txn);
 		
 		accRepo.update(toAccount);
 		
-		txn = new Transaction(r.nextInt(100000), amount, toAccount.getBalance(), LocalDateTime.now(), TransactionType.CREDIT, toAccNum);
+		txn = new Transaction(r.nextInt(100000), amount, toAccount.getBalance(), LocalDateTime.now(), TransactionType.CREDIT, toAccount);
 		
 		txnRepo.addTransaction(txn);
 		

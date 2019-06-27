@@ -1,16 +1,16 @@
 package com.wissen.repository;
 
-import java.sql.PreparedStatement;
-
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.wissen.model.Transaction;
 
 @Repository("jdbcTransactionRepository")
+@Qualifier("jdbc")
 public class JdbcTransactionRepository implements TransactionRepository {
 
 	JdbcTemplate jdbcTemplate;
