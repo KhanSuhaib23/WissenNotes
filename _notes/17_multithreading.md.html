@@ -1,0 +1,371 @@
+<meta charset="utf-8">
+
+**Multithreading in Java**
+
+* threads are state of execution through a process
+* threads shares the same memory area as the process
+* threads however do have their own stack
+* threads also maintain their context information that stores the execution context of the thread
+* by default each process has a single thread
+* Java has 1 main thread and 21 background threads to handle JVM related things like garbage collection
+* More threads can be created by the application
+
+*Thread Creation in Java*
+
+~~~~~~~~~~~~~~~ java
+
+// old method
+
+class ThreadTask implements Runnable { // runnable is a functional interface that has a function can run()
+
+    // member variables
+    // member functions
+
+    public void run() {
+        // code to run threaded
+    }
+
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+        
+        Runnable task = new ThreadTask();
+
+        Thread thread = new Thread(task); 
+
+        thread.start(); // create a new thread and runs the run() method on it
+
+        // this is the old method
+        // extremely cumbersome
+        // if some local variable values had to be used in the thread they 
+        // have to be pass in through the constructor
+
+        
+        // method 2
+        // using functional programming
+
+        Runnable task = () -> {
+            // can use final or effectively final variables in the scope
+            // code to run threaded
+        };
+
+        Thread thread = new Thread(task, ["name"]);
+
+        thread.start();
+
+
+
+    }
+
+}
+
+~~~~~~~~~~~~~~~
+
+*Thread Functions*
+
+Functions |  Description
+----------|----------------------------------------------------
+otherthread.join() | The thread that called this function waits for the otherthread to complete before continuing 
+otherthread.name() | The name of the thread. 
+Thread.currentThread() | Returns a reference to the current thread object that the function was called in
+thread.setPriority(val) | Default Value: 5, Minimum Value: 1, Maximum Value: 10
+otherthread.interrupt() | sends an interrupt to the other thread. If the thread was in a state where it couldn't properly be interrupted it throws InterruptedException.
+thread.isInterrupted() | returns true if the thread has been interrupted
+
+
+*Sleep Function*
+
+~~~~~~~~~~~~~~ java
+
+TimeUnit.{SECONDS | MILLISECONDS | MICROSECONDS | NANOSECONDS }.sleep(time to sleep in the preceding time unit)
+
+// call this function in the thread you want to sleep
+// a thread cannot make another sleep
+~~~~~~~~~~~~~~
+ 
+*Race Condition*
+
+* Race condition occurs due to unconstrained access of a common resource by more than one thread
+* Usually operations on variable take place in different steps
+ * Load (loads the value in the register)
+ * Operate (operate on that data. If the operation modifies the data we could run into race conditions)
+ * Write (if there was a modification write back the modified data)
+* In race condition a situation could occur when the write back of one thread overwrites the changes made by another thread
+* To prevent this shared resources can be constrained such that they can be accessed by a single variable
+* In java one way to achieve this is using the sychronized keyword
+
+*Synchronized*
+
+* First we need to understand 2 things in java
+ * First : Any object can be using as a lock object 
+ * Second: Class is itself an object (accessed using either class-name.class or Class.forName("full class name")) 
+* So let's see where all sychronized keyword can be placed and what are the consequences
+* First we need to understand the synchronized block
+
+~~~~~~~~~~ java
+
+Object obj;
+
+/* ... */
+
+void someMethod() {
+    //
+
+    synchronized (obj) {
+        // sychronized code
+    }
+
+    //
+}
+
+void someOtherMethod() {
+    //
+
+    synchronized (obj) {
+        // some other synchronized code
+    }
+
+    //
+}
+
+// here what happens is code before entering the synchronized block it check whether 
+// the lock on Object obj is available 
+// if yes then it enter 
+// else it waits on the object
+// once the code exits the block any one of the many threads waiting on the obj enters the block
+// the thread that enters is random (not FIFO)
+// the obj can be of any type since all Class derived from the Object class
+
+~~~~~~~~~~
+
+* Next we will look at synchronized keyword at the instance method level
+
+~~~~~~~~~~ java
+
+class A {
+
+    void synchronized a() {
+
+    }
+
+    void synchronized b() {
+
+    }
+
+}
+
+// equivalent to 
+
+class A {
+
+    void a() {
+        synchronized (this) {
+
+        }
+    }
+
+    void b() {
+        sychronized (this) {
+
+        }
+    }   
+
+}
+
+// this has one problem though 
+// The instance is used as a lock of both the methods
+// this means that if one thread is accessing the synchronized block of method a
+// then another thread cannot access the synchronized block of method b using the same instance
+
+public class Main {
+
+    public static void main(String[] args) {
+        A a = new A();
+        
+        Runnable r1 = () -> {
+            a.a();
+        }
+
+        Runnable r2 = () -> {
+            a.b();
+        }
+
+        Thread t1 = new Thread(r1);
+        Thread t2 = new Thread(r2);
+
+        t1.start(); // access a.a() 
+        t2.start(); // has to wait to access a.b()
+
+        // so even if methods a and b are independent they have to wait for each other
+
+
+    }
+
+}
+
+// a better solution is methods a() and b() are independent
+
+class A {
+
+    private final Object syncA = new Object();
+    private final Object syncB = new Object();
+
+    void a() {
+        synchronized (syncA) {
+
+        }
+    }
+
+    void b() {
+        sychronized (syncB) {
+
+        }
+    }   
+
+    // thus now a and b can truly be independently called 
+}
+
+
+~~~~~~~~~~
+
+!!! note
+    If there is another method that is not synchronized it can be normally called without having to obtain a lock
+
+*Synchronized on static methods*
+
+~~~~~~~~~~ java
+
+class A {
+
+    public static synchronized void a() {
+
+    }
+
+    public static synchronized void b() {
+
+    }
+
+}
+
+// here the synchronization is on class object
+// there is a single class object per class
+// the code is equivalent to 
+
+
+class A {
+
+    public static void a() {
+
+        synchronized (A.class) {
+
+        }
+
+    }
+
+    public static synchronized void b() {
+
+        synchronized (A.class) {
+
+        }
+
+    }
+
+}
+
+// same problem as before but on a class level
+// only one of these static methods can be called at a time
+// huge performance issue
+// solution (if methods a and b are independent)
+
+
+class A {
+
+    private static final Object syncA = new Object();
+    private static final Object syncB = new Object();
+
+    public static void a() {
+
+        synchronized (syncA) {
+
+        }
+
+    }
+
+    public static synchronized void b() {
+
+        synchronized (syncB) {
+
+        }
+
+    }
+
+}
+
+~~~~~~~~~~
+
+!!! note
+    Same as before if there is another static method that isn't synchronized then it can be called normally without having to obtain any lock
+
+
+*Issues with synchronized keywords*
+
+* We cannot say say to wait on the synchronized block for n seconds else continue. Threads waiting on a synchronized block is blocked until it can get in
+* We cannot release the lock without exiting the synchronized scope
+* No concept of a shared lock, all locks are exclusive. So reader writer systems would be extremely inefficient.
+* Therefore synchronized blocks are often complemented with wait and notify methods provided by Object class
+
+*Wait and Notify*
+
+* wait and notify are methods implemented by the Object class and are therefore present in every class 
+* wait and notify methods can only be called if we are inside a synchronized block of the same object
+
+~~~~~~~~~~~ java
+
+// valid
+synchronized (obj) {
+    obj.wait();
+    obj.notify();
+}
+
+// invalid
+obj.wait();
+obj.notify();
+
+// invalid
+synchronized (other) {
+    obj.wait();
+    obj.notify();
+}
+
+~~~~~~~~~~~
+
+Method | Description
+-------|--------------
+obj.wait | The current thread releases the lock on obj it currently hold and get blocked. Waiting for a some other to notify it. Once notified it recaptured the lock before continuing execution
+obj.notify | The current thread notifies any random waiting thread so they can continue their execution. 
+obj.notifyAll | Notifies all the threads waiting on the object
+
+*Volatile*
+
+* variables marked volatile are not cached
+* that means changes to these variables are always visible instantly to all other threads
+* just because a variable is synchronized doesn't garuantee synchronization though
+* race conditions can still occur
+
+*Deadlock*
+
+* occurs when one thread has acquired resource A and wants resource B and another thread has acquired resource B and wants resource A
+* solved by introducing a randomized waiting period after which the thread give up trying to obtain the other resource and try again after sometime
+* can introduce major delays
+* Or by making sure all resource acquisition happens all at once
+* That is thread X tries to acquire A and B at the same time. If it can't acquire either one it gives up and tries again after some time
+* Or follow a acquire1 release1 acquire2 release2 pattern instead of acquire1 acquire2 release1 release2 pattern
+
+
+*New Multithreading Support in Java*
+
+* all the above methods are the old way of doing multithreading and concurrency in java
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
