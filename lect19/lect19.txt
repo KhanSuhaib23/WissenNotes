@@ -1,0 +1,43 @@
+Lecture 19 Java 28-06-2019
+
+------- Web Application -------
+
+JEE
+	Servlet
+	JSP
+
+Architecture
+	MVC
+		--> Model: business data
+				Layers
+					|
+					|---> Persistence Layer
+					|
+					|---> Service Layer
+
+		--> View: the presentation. Should not be tightly coupled with Model
+
+		--> Controller: broker between Model and View
+
+Web Application should have war packaging
+
+Java Localhost server 2s for response
+
+@RequestMapping(value = url, method = RequestMethod.{}, params = {"paramnames [[!]= value]", ...}, 
+				headers= {"header-name[=value]"}, consumes = {"media type", ...})
+
+@RequestParam (required, defaultValue="val") param-type param-name
+
+param-name and request name should match
+
+@ModelAttribute ModelClass modelname
+
+if (consumes = application/xml) use @RequestBody and the Model needs to be annotated on JAXB
+
+// and we have to do @EnableWebMvc
+
+BindingResult to get the errors on incorrect client data
+
+system and system path doesnt work for web apps
+
+Therefore put all the jar dependencies inside webapps > WEB-INF > lib
