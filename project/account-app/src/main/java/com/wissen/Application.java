@@ -4,13 +4,13 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.wissen.config.AccountServiceConfiguration;
+import com.wissen.model.Account;
 import com.wissen.service.TxnService;
 
 public class Application {
-	
+		
 	public static void main(String[] args) {
-		
-		
+				
 		ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(AccountServiceConfiguration.class);
 		
 		Log.ACCOUNT_APP.info("started...");
@@ -25,6 +25,7 @@ public class Application {
 		Log.ACCOUNT_APP.info("ended...");
 		
 		context.close();
+		
 		
 	}
 }

@@ -1,0 +1,25 @@
+Lecture 20 Java (Spring Boot) 29-06-2019
+
+
+@SpringBootApplication
+
+==
+
+@Configuration
+@ComponentScan (basePacakges = {"current package"})
+@EnableAutoConfiguration
+
+
+--profile=<prof> -------> Check
+
+Else
+
+right click > Run > Run Config > Spring Boot App
+
+In Spring Boot static resources in 
+
+static dir
+
+And to make embeded tomcat serve jsp include
+
+tom-embed-jasper
