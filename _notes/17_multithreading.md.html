@@ -367,5 +367,354 @@ obj.notifyAll | Notifies all the threads waiting on the object
 *New Multithreading Support in Java*
 
 * all the above methods are the old way of doing multithreading and concurrency in java
+* the main problems with the above methods are performance based
+* creating a thread is an expensive process, so creating anew Thread every time one needs it and then destroying it when its task completes is incredibly wasteful
+* synchronized object also dont support by default shared locks
+* the new methods includes creating thread pools and locks 
+* these threads pools and locks can be implemented using standard synchronized object and the Thread class
+
+*Thread Pools*
+
+~~~~~~~~~~~~~~ java
+
+// The default thing that is used is an executor service that holds a thread pool instance
+// There are many types of thread pools available as through the Executors factory
+// Following are some of the most used ones
+
+ExecutorService threadPool = Executors.newSingleThreadExecutor();
+// can create a single worker thread at a time having a single unbounded queue 
+
+ExecutorService threadPool = Executors.newFixedThreadPool(n);
+// create a new thread pool that reuses n number of threads of a shared unbounded queue
+
+ExecutorService threadPool = Executors.newCachedThreadPool();
+// this thread pool create as many thread as need, but once a thread is finished it isn't destroyed 
+// the threads are cached to be reused later. If no new job arrives for 90 seconds then the threads destroyed
+
+// To create a thread to run in a thread pool we must use the submit method
+
+// All of these above methods can also take a non default thread factory that it calls when creating new thread
+// They also have a version that returns a ScheduledExecutorService wherein threads can be submitted to run after a delay
+
+threadPool.submit(runnable);
+
+// We can also submit a callable
+// Callable is an interface like Runnable but can return results and throw Exceptions
+
+Future&lt;String&gt; res = threadPool.submit(callable);
+
+// future object can be used to query things like isComplete or isCancelled
+
+
+// submitting multiple Callables at the same time
+
+Collection&lt;Callable&lt;Future&lt;String&gt;&gt;&gt; callables = Arrays.asList(callable1, callable2, callable3, ...);
+
+List&lt;Future&lt;String&gt;&gt; futureResults = 
+threadPool.invokeAll(callables); // runs all the callables in the list of tasks that were invoked
+
+for (Future&lt;String&gt; res : futureResults) {
+    String str = res.get(); // gets the result when available
+
+    // or
+
+    String str = res.get(n, TimeUnit.SECONDS); // waits for n seconds to get the result 
+    // if not available till then returns null and continues
+
+threadPool.shutDown(); // when not needed anymore the thread pool should be shutdown
+
+}
+
+~~~~~~~~~~~~~~
+
+* [Executors Documentation](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html)
+* [ExecutorService Documentation](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ExecutorService.html)
+* [Callable Documentation](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Callable.html)
+* [Future Documentation](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Future.html)
+* [ThreadFactory Documentation](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ThreadFactory.html)
+
+*Problems with thread pools*
+
+* No default option to join so that we could have one thread waiting one the others
+* No default option for multiple threads to wait at a single point until other threads also reach that point
+* For the first problem we use a countdown latch for the second problem we use a CyclicBarrier
+
+*CountDownLatch*
+
+* CountDownLatch latch can be initialized with a value and then a thread can be made to wait on the latch which can continue when the value of the latch reaches 0
+* Each thread upon which the main thread has to wait decreements the latch when it is done with its task
+
+
+~~~~~~~~~~ java
+
+class Counter {
+    private int count;
+
+    public synchronized void increement() {
+        count++;
+    }
+
+    public int get() { return count; }
+}
+
+void CountDownLatchDemo() {
+
+    Counter counter = new Counter();
+
+    int nthread = 100;
+
+    CountDownLatch latch = new CountDownLatch(nthread);
+
+    Runnable task = () -> { 
+        for (int i = 0; i &lt; 1000; i++) {
+            counter.increement();
+        }
+
+        latch.countDown();
+    };
+
+    ExecutorService threadPool = Executors.newCachedThreadPool();
+
+    for (int i = 0; i &lt; nthread; i++) {
+        threadPool.submit(task);
+    }
+
+    latch.await(); // we want to wait for all the threads to complete the counting up before getting the final result
+
+    int finalRes = counter.get();
+}
+
+~~~~~~~~~~
+
+*CyclicBarrier*
+
+* What if we want many threads to wait at a particular point until all the other threads also reach that point
+* Here we can use the CyclicBarrier
+
+~~~~~~~~~ java
+
+void cyclicBarrierDemo() {
+
+    int nthread = 100;
+
+    CyclicBarrier cbarrier = new CyclicBarrier(nthread);
+
+    Runnable task = () -> {
+        int count = 0;
+
+        for (int i = 0; i &lt; 1000; i++) {
+            count++;
+        }
+
+        cbarrier.await(); // waits for nthreads to reach this point before every thread continues ahead together 
+    };
+
+    ExecutorService threadPool = Executors.newFixedThreadPool(nthread);
+
+    for (int i = 0; i &lt; nthread; i++) {
+        threadPool.submit(task);
+    }
+}
+
+~~~~~~~~~
+
+!!! note
+    CyclicBarriers require some Exception handling code that is not provided here
+
+*Locks*
+
+* The primary lock used is called the Reentrant lock
+* It allows us to lock (which blocks) tryLock (which doesn't block)
+* tryLock can also be used to make the thread wait for a certain time if it cannot obtain the lock it continues
+* Once a lock is obtained it can be unlocked at any point
+* The queue for blocked threads can also be either made fair (FIFO, has a performance hit) or not
+
+~~~~~~~~~ java
+
+void lockDemo() {
+    Lock lock = new ReentrantLock();
+    
+    Runnable task = () -> {
+
+        try {
+            lock.lock();
+
+            // some code that can throw exception
+        } catch (Exception e) {
+            // handle Exception
+        } finally {
+            lock.unlock();
+        }
+
+    }
+}
+
+~~~~~~~~~
+
+[ReentrantLock Documentation](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/locks/ReentrantLock.html)
+
+*Semaphore*
+
+* Semaphore can be said to be a resource gate
+* it is said to have a given 'n' value that can be said to represent some n number of resources
+* A thread can try to acquire some 'm' number of resources
+* If enough resources are not available then the thread is blocked
+* Else the available count is decreemented by the value and the thread enters
+* Generally used if we only want certain number of threads to enter a particular block at a time
+
+~~~~~~~ java
+
+void producerConsumer() {
+
+    final int MAX_SIZE = 100;
+
+    Semaphore canProduce = new Semaphore(MAX_SIZE); // at the start the queue is empty, so he can produce MAX_SIZE products
+    Semaphore canConsume = new Semaphore(0); // at start no elements in the array so cannot consume anything
+
+    Runnable producer = () -> {
+
+        while (true) {
+            canProduce.acquire(1); // see if there is space to produce
+            
+            // produce and add to queue
+
+            canConsume.release(1); // tell any consumer that they have one more product to consume
+        }
+        
+    }
+
+    Runnable consumer = () -> {
+
+        while (true) {
+            canConsume.acquire(1);
+
+            // consume and remove from queue
+
+            canProduce.release(1); // tell any produce that there is one more space available
+
+        }
+    }
+
+    ExecutorService threadPool = Executors.fixedThreadPool(2);
+
+    threadPool.submit(producer);
+    threadPool.submit(consumer);
+
+    threadPool.shutDown();
+
+}
+
+~~~~~~~
+
+[Semaphore Documentation](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Semaphore.html)
+
+*Conditions*
+
+* conditions can be created from lock
+* conditions are additional synchronization object on which a thread can await or signal
+* await and signal can be both called only when the corresponding lock has be acquired
+* await releases the corresponding lock and block until it recieves a signal
+* signal signals any thread awaiting on the given condition
+
+~~~~~~~~~~ java
+
+void conditionsDemo() {
+
+    List&lt;String&gt; buffer = new ArrayList&lt;&gt;(); 
+
+    // say we have 2 functions isFull and isEmpty
+    // they do the obvious things
+    
+    Lock lock = new ReentrantLock();
+
+    Condition notFull = lock.newCondition();
+    Condition notEmpty = lock.newCondition();
+
+    Runnable producer = () -> {
+        while (true) {
+            lock.lock();
+
+            if (isFull(buffer)) {
+                notFull.await(); // block until someone signals that buffer is notFull 
+            }
+            // producer and add
+
+            notEmpty.signal(); // signal that the buffer is notEmpty 
+        }
+    }
+
+    Runnable consumer = () -> {
+        while (true) {
+            lock.lock();
+
+            if (isEmpty(buffer)) {
+                notEmpty.await(); // block until someone signals that buffer is notFull 
+            }
+            // consume and remove
+
+            notEmpty.signal(); // signal that the buffer is notEmpty 
+        }
+    }
+
+    ExecutorService threadPool = Executors.newFixedThreadPool(2);
+
+    threadPool.submit(produce);
+    threadPool.submit(consume);
+
+    threadPool.shutDown();
+
+}
+
+~~~~~~~~~~
+
+*ReadWriteLock*
+
+* multiple reads can happen at the same time
+* only a single write can happen at a time
+* when writing no reads can happen
+* thus we could say reads require shared locks and writes require exclusive locks
+* java provides a inbuilt way to do this
+
+~~~~~~~~~~ java
+
+void readWriteLockDemo() {
+
+    ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+
+    Lock readLock = readWriteLock.readLock();
+    Lock writeLock = readWriteLock.writeLock();
+
+    Runnable writeTask = () -> {
+        writeLock.lock();
+
+        // write operation
+        
+        writeLock.unlock();
+    };
+
+
+    Runnable readTask = () -> {
+        readLock.lock();
+
+        // read operation
+        
+        readLock.unlock();
+    };
+
+    ExecutorService threadPool = Executors.newCachedThreadPool();
+
+    for (int i = 0; i &lt; 50; i++) {
+        if (i % 2 == 0) threadPool.submit(writeTask);
+        else threadPool.submit(runTask);
+    }
+
+    threadPool.shutDown();
+}
+
+~~~~~~~~~~
+
+
+
+[Details Documentation of concurrency in Java](https://docs.oracle.com/javase/tutorial/essential/concurrency/index.html)
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
