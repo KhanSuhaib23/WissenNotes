@@ -1,0 +1,272 @@
+Lecture 21 01-07-2019 JavaScript
+
+Introduction
+
+.js is 
+    - client side language (runtime = browser)
+    - server side language (runtime = Node.js)
+
+Reference for JS Runtime -> kangax github
+
+To run JS either use node or create a webpage and include the script in it and 
+load the page on a server
+
+For server we can install a live-server
+
+npm install -g live-server
+
+live-server --port=8181 // when in the code directory
+
+Then load that page at the localhost at the specified port
+
+--- Data Types ---
+
+	1. Simple / Primitives => values
+		a. undefined: var ud; // no value so undefined 
+		b. string
+		c. number
+		d. boolean
+
+	2. Complex / References => objects
+
+And function with Pascal case is class and constructor
+
+function Person(name, age) {
+	// state
+
+	this.name = name;
+	this.age = age;
+
+	// behaviour
+
+	this.printName = function () {
+		console.log('Your name is ${this.name}');
+	}
+
+	this.printAge = function() {
+		console.log('Your age is ${this.age}')
+	}
+}
+
+// By default every JS function returns undefined
+
+var p1 = new Person("Suhaib", 22);
+
+p1.printName();
+
+However every Person instance creates instance of the function as well
+However that is common for every instance
+So duplication and performance hit
+
+So we can use JS equivalent of inheritance
+
+That is prototype which is like a parent object
+
+Put common stuff in the prototype
+
+function Person(name, age) {
+	// state
+
+	this.name = name;
+	this.age = age;
+
+}
+
+Person.prototype.printName = function () {
+	console.log('Your name is ${this.name}');
+}
+
+Person.prototype.printAge = function () {
+	console.log('Your name is ${this.age}');
+}
+
+Object.prototype is the god class of every object in JS
+
+It has common functions like isPrototypeOf
+
+// above syntax till ES5
+
+New Syntax
+
+class Person {
+	constructor(name, age) {
+
+	}
+
+	sayName() {
+
+	}
+
+	sayAge() {
+
+	}
+}
+
+// exactly same as the above one on runtime
+
+// extensible object
+
+// new properties can be added to objects as they go along
+
+var p1 = new Person("Suhaib", 22);
+
+p1.skill = 'c' // adds a property called skill and assigns string c to it
+
+But to prevent this we can make an object non extensible
+
+Object.preventExtensions(p1);
+
+// check using Object.isExtensible(p1)
+
+p1.skill = 'c'; // a new property is not added however JS doesn't throw an error
+
+// to force JS to throw an error here we can use
+
+"use strict" // at the beginning of the file
+
+// properties can also be deleted as we go along
+
+delete p1.age
+
+// to prevent this we have to seal the object
+
+Object.seal(p1);
+
+// check using Object.isSealed(p1)
+
+// Seal prevents extensions as well
+
+// all objects are by default mutable
+// to make it immutable
+
+Object.freeze(p1);
+
+// to check Object.isFrozen(p1)
+
+// Frozen objects are by default Sealed as well
+
+
+
+-------------------------------------------
+
+
+// Literal Style Object
+
+// Creating object without new keyword
+
+var httpReqConfig = new Object();
+
+httpReqConfig.url = ...
+httpReqConfig.method = 'GET'
+httpReqConfig.onSuccess = function (response) {
+	//...
+}
+
+// better method
+
+var httpReqConfig = {
+	url: ... ,
+	method: 'GET',
+	onSucess: function (response) {
+		// ...
+	}
+};
+
+
+----------------------------------------
+
+Arrays in JS
+
+Always dynamic
+
+var menu = new Array();
+
+// or
+
+var menu = [];
+
+
+-----------------------------------------
+
+Regular Expression
+
+var aadharPattern = new RegExp(<reg ex>); // reg ex has to be escapes
+
+// or
+
+var adhaarPattern = /<regex>/; // reg ex no need to escape
+
+--------------------------------------------
+
+Functions (by default functions are objects)
+
+                       parameters       body 
+
+var add = new Function("n1", "n2", "return n1+n2;");
+
+or 
+
+var add = function(n1, n2) { 
+	return n1 + n2; 
+}
+
+// Only 4 objects are created without new Keywork
+
+literal, array, regex, function
+
+else all require new keyword
+
+
+
+-----------------------------------------
+
+Reading Properties
+
+p1.name // m1
+
+p1['name'] // m2
+
+p1[num] // m3
+
+var p1 = {
+	
+	name :'Suhaib', // m1 or m2
+	'home-address':'Street', // only m2
+	1: '...' // only m3
+
+}
+
+
+-----------------------------------------
+
+Scope/Execution Context
+
+All variables defined in the scope are initialized with undefined values at the start of the scope
+
+So a variable defined in the last row can be used (not meaningfully) anywhere in the scope
+
+This is known as variable hoisting
+
+In JS undefined (not error) != not defined (error)
+
+JavaScript doesn't have block scope for variables only function and global scope
+
+-------------- Functions ------------------
+
+In JS functions can be given 0 to n inputs regaurdless of how they are declared
+
+The decalred params are only symbolic representations given to the input parameters
+
+...rest
+
+IIFE (Immediately Invocable Function Expression)
+
+
+--------------- Function Binding ----------------
+
+Statically Binded Function
+
+Dynamically Binded Function
+	call
+	apply
+	bind
