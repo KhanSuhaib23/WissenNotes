@@ -50,3 +50,23 @@ let person = {
 
 person.name = "Hello"; // calls setter method
 console.log(person.name) // calls getter method
+
+spreading
+destructuring
+
+for of
+for in
+
+
+Generator Function (like C# coroutines)
+
+function*
+
+
+commonJS standard
+
+nodejs uses commonJS
+
+to use commonjs standard in browser we use webpack (a module bundler, one simple bundler is browserify)
+
+lodash
