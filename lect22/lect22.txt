@@ -1,0 +1,52 @@
+
+
+Arrow functions are always binded to the object that created it
+
+(Normal function are bind to the objects that call it)
+
+It cannot be bind to any other object
+
+It also capture this of the object that create it
+
+Important notes
+
+Say we have
+
+var obj = {
+	name: 'Name',
+	myFunc: function () {
+		//
+	}
+}
+
+The function here is not created by obj, 
+it is created by the global scope (which in a browser is the Window)
+
+
+var obj = {
+	name: 'Name',
+	createFunc = function() {
+		return function() {
+			//
+		}
+	}
+}
+
+Now the inner function is actually created by the obj
+
+let person = {
+	_name: 'Suhaib', // signifies private
+	_age : 22,
+
+	set name(name) {
+		if (name === "") return; 
+		else this._name = name;
+	}
+
+	get name() {
+		return this._name;
+	}
+}
+
+person.name = "Hello"; // calls setter method
+console.log(person.name) // calls getter method
