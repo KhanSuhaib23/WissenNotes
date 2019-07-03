@@ -1,0 +1,49 @@
+
+Webpack with HtmlWebpackPlugin
+
+webpack has a dev server to replace live-server
+
+webpack dev server bundles automatically on change saved
+
+npm
+
+scripts {
+	<script-name>: <command>,
+	...
+}
+
+import can be used with not only JS files but also JSON
+
+UI
+
+Data + Style + Behaviour
+
+in web
+
+HTML + CSS + JS
+
+Internally browser stores html webpages as tree data strcuture called DOM
+
+document.getElement.... are old way
+we now use
+
+document.querySelector
+
+html -> DOM
+css -> CSSOM
+
+DOM + CSSOM = Render Tree
+
+user interaction with the webpage is called events
+
+Under Ctrl+Shift+I > Sources > Event Listener Breakpoint you can find all possible events
+
+Web Sockets API (permanent session between page and server)
+
+SSE is now Server Sent Events
+
+web workers threading
+
+caniuse.com
+
+latentflip.com/loupe
