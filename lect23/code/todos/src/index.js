@@ -1,3 +1,14 @@
+// setTimeout(function timeout() {
+//     console.log("Click the button!");
+// }, 500);
+
+// for (var i = 0; i < 1000000; i++) {
+//     console.log('Hello')
+//     if (i === 10000) throw Error('err')
+// }
+
+
+
 
 import 'bootstrap/dist/css/bootstrap.css'
 
@@ -10,6 +21,7 @@ todoLoad.style.display = 'none';
 todoButton.addEventListener('click', e => {
 
     todoLoad.style.display = '';
+    todoList.style.display = 'none';
 
     let url = 'https://jsonplaceholder.typicode.com/todos?_limit=10';
     let promise = fetch(url);
@@ -27,6 +39,7 @@ todoButton.addEventListener('click', e => {
 
         todoList.innerHTML = alltodos.join('');
 
+        todoList.style.display = '';
         todoLoad.style.display = 'none';
     })
 })

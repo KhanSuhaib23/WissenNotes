@@ -1,0 +1,36 @@
+Lecture 24 04-07-2019 JavaScript
+
+the reactive manifesto
+
+ReactiveX
+
+	|
+	|---> rxjs (JavaScript)
+
+Parent Element talk to child using prop 
+
+child talks to parent usng events
+
+
+Angular
+
+execution begins at main.ts
+
+Angular Module = Directives + Pipes + Services
+
+Every Angular Application must have atleast one module
+
+To tell Angular a particular class is a module we use decorator called @NgModule
+
+declarations: provides all the components in the module
+
+@Component
+	selector: the custom tag 
+	templateUrl: link to the HTML template
+	styleUrls: link to style sheets
+
+.spec files are test cases
+
+use npm start to start the project (it internally called ng serve)
+
+src > styles.css is global css
