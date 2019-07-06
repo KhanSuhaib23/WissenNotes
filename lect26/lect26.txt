@@ -1,0 +1,43 @@
+Lecture 26 (06-07-2019)
+
+Say some part of the application is used in many places
+
+Then the parent child relation of passing info becomes way too complex
+
+So we should do is create a service 
+
+An NG Service is always a singleton
+
+The service implements the common functionalities
+
+The Service instance can be passed to any component using dependency injection
+
+Angular only supports constructor based dependency injection 
+
+
+Then reactive concepts can be used in which the Service provider creates a stream in which it pushes events
+
+Then anyone lisening to the stream can be informed about all the events and reactive accordingly
+
+Query parameters should only be used for filtering or pagenation not an CRUD operations
+
+GET: get resource
+HEAD: get resource details
+PUT: insert or update resource
+POST: only to create resource (or execute controller)
+OPTION: retrieve metadata regaurding possible operations on the resource
+PATCH: partial update
+
+
+FormsModule -----------> ReactiveFormsModule
+
+from @angular/forms
+
+FormBuilder
+
+
+code highlightingh
+
+https://prismjs.com/
+
+
