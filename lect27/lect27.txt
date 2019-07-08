@@ -1,0 +1,12 @@
+Lecture 26 (06-07-2019)
+
+Resolver: to make sure some data is loaded before loading the component
+
+Gaurds:
+
+Child routes
+
+@RestControlller
+
+all methods are @ResponseBody
+
