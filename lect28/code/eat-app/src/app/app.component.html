@@ -1,0 +1,19 @@
+<div>
+	<app-nav-bar></app-nav-bar>
+	<br />
+
+	<button (click)="get()">Get</button>
+	<div id="big-container">
+		<div id="play-area">
+			<div (cdkDragMoved)="dragStart($event)" id="drag" class='card' cdkDragBoundary="#play-area" cdkDrag>
+				<div class='card-header' cdkDragHandle>
+					Drag Here
+				</div>
+				<div class='card-body'>
+					This will we dragged
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>

@@ -1,0 +1,46 @@
+<div class='food-item'>
+    <div class="row">
+        <div class="col-3 col-sm-3 col-md-3 col-lg-3">
+            <img [src]="imgPath" class="img-fluid" />
+        </div>
+        <div class="col-9 col-sm-9 col-md-9 col-lg-9">
+            <div id="food-item-content">
+                <h5>{{name}}</h5>
+                <h6>{{price | currency: 'INR'}} </h6>
+                <br />
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a (click)="changeTab($event, 1)" [ngClass]="{'nav-link':true,active:isCurrTab(1)}"
+                            href="/">Description
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a (click)="changeTab($event, 2)" [ngClass]="{'nav-link':true,active:isCurrTab(2)}"
+                            href="/">Ingredients
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a (click)="changeTab($event, 3)" [ngClass]="{'nav-link':true,active:isCurrTab(3)}"
+                            href="/">Reviews
+                        </a>
+                    </li>
+                </ul>
+                <div class="container" id="food-item">
+                    <div *ngIf="isCurrTab(1)">{{description}}</div>
+                    <div *ngIf="isCurrTab(2)">Not Yet</div>
+                    <div *ngIf="isCurrTab(3)">
+						<app-review *ngFor="let review of reviews" [author]="review.author" [stars]="review.stars" [body]="review.body"></app-review>
+                    </div>
+                </div>
+
+				<br />
+				<button *ngIf="quantity === 0" class="btn btn-sm btn-dark" (click)="buyItem($event)">Buy</button>
+				<app-counter *ngIf="quantity !== 0" [value]="quantity" 
+				(increase)="increaseItemQty($event)" (decrease)="decreaseItemQty($event)"></app-counter>
+                <!-- <span id="food-item-count" class="badge badge-success"><h6>{{itemBought}}</h6></span> -->
+            </div>
+        </div>
+
+    </div>
+
+</div>

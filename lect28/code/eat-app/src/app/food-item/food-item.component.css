@@ -1,0 +1,13 @@
+#food-item {
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+#food-item-content {
+    margin-left: 25px;
+}
+
+#food-item-count {
+    margin-left: 10px;
+    width: 30px;
+}

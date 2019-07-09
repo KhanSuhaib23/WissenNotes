@@ -1,0 +1,12 @@
+<div class="items-list">
+	<br />
+
+	<div class="container">
+
+		<div class="list-group-item" *ngFor="let item of items">
+			<app-food-item id="{{item.id}}" name="{{item.name}}" price="{{item.price}}"
+				description="{{item.description}}" imgPath="{{item.imgPath}}">
+			</app-food-item>
+		</div>
+	</div>
+</div>
