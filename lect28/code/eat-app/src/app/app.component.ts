@@ -7,16 +7,22 @@ import { CdkDragPlaceholder } from '@angular/cdk/drag-drop';
 	styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+	dragElem;
 
+	ngOnInit() {
+		this.dragElem = document.getElementById("drag")
 
-	get() {
-		let dragElem = document.getElementById("drag")
-		let rect = dragElem.getBoundingClientRect();
-		console.log(rect.left + ', ' + rect.top)
+		let transform = localStorage.getItem('mytransform');
+		if (transform) {
+			this.dragElem.style.transform = transform;
+		}
+		
+		
 	}
-
+	
 	dragStart(event) {
-		console.log('Drag');
+		
+		localStorage.setItem('mytransform', this.dragElem.style.transform);
 	}
 
 
